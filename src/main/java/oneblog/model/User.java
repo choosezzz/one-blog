@@ -142,4 +142,24 @@ public class User {
     public void setType(Byte type) {
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", phone='" + phone + '\'' +
+                ", userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", sex='" + sex + '\'' +
+                ", realName='" + realName + '\'' +
+                ", birthday=" + birthday +
+                ", email='" + email + '\'' +
+                ", introduction='" + introduction + '\'' +
+                ", salt='" + salt + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", registTime=" + registTime +
+                ", status=" + status +
+                ", type=" + type +
+                '}';
+    }
 }

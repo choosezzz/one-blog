@@ -27,6 +27,26 @@
     from user
     where user_id = #{userId,jdbcType=INTEGER}
   </select>
+
+  <select id="selectWithPasswordBySelective" resultMap="BaseResultMap" parameterType="oneblog.model.User" >
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where password = #{password,jdbcType=VARCHAR}
+    <if test="userId != null" >
+      and user_id = #{userId,jdbcType=INTEGER}
+    </if>
+    <if test="userName != null" >
+      and user_name = #{userName,jdbcType=VARCHAR}
+    </if>
+    <if test="phone != null" >
+      and phone = #{phone,jdbcType=VARCHAR}
+    </if>
+    <if test="email != null" >
+      and phone = #{email,jdbcType=VARCHAR}
+    </if>
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from user
     where user_id = #{userId,jdbcType=INTEGER}
