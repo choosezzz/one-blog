@@ -6,7 +6,8 @@ package oneblog.constant;
  */
 public enum ResponseEnum {
     SUCCESS(2001, "OK"),
-    ERROR(4001, "ERROR");
+    ERROR(4001, "ERROR"),
+    PARAM_INVALID(4002, "参数检验失败。");
 
 
     private String msg;

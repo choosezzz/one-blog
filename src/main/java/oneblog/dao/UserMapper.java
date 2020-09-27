@@ -1,6 +1,7 @@
 package oneblog.dao;
 
 import oneblog.model.User;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -11,9 +12,9 @@ public interface UserMapper {
 
     int insertSelective(User record);
 
-    User selectByPrimaryKey(Integer userId);
-
-    User selectWithPasswordBySelective(User user);
+    User selectByIdWithPwd(@Param("userId") Integer userId, @Param("password") String password);
+    User selectById(Integer userId);
+    User selectByName(String name);
 
     int updateByPrimaryKeySelective(User record);
 

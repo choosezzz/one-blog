@@ -17,17 +17,22 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Override
-    public User getUserById(int userId) {
-        return userMapper.selectByPrimaryKey(userId);
+    public User getUserByIdWithPwd(int userId, String password) {
+        return userMapper.selectByIdWithPwd(userId, password);
     }
 
     @Override
-    public User getUserWithPasswordByParam(User user) {
-        return userMapper.selectWithPasswordBySelective(user);
+    public User getUserById(int userId) {
+        return userMapper.selectById(userId);
     }
 
     @Override
     public int registerUser(User user) {
         return userMapper.insertSelective(user);
+    }
+
+    @Override
+    public User getUserByName(String name) {
+        return userMapper.selectByName(name);
     }
 }

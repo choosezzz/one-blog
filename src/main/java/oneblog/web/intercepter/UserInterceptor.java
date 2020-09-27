@@ -1,5 +1,6 @@
 package oneblog.web.intercepter;
 
+import oneblog.utils.TraceUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -7,6 +8,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.UUID;
 
 /**
  * @Author dingshuangen
@@ -18,6 +20,7 @@ public class UserInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        TraceUtil.setTraceId(UUID.randomUUID().toString().replace("-", ""));
         return true;
     }
 

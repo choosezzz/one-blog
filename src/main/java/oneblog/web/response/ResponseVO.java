@@ -1,11 +1,14 @@
 package oneblog.web.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import oneblog.constant.ApiEnum;
 import oneblog.constant.ResponseEnum;
 
 /**
  * @Author dingshuangen
  * @Date 2020/9/25 14:57
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseVO<T> {
 
     private String msg;
@@ -13,6 +16,11 @@ public class ResponseVO<T> {
     private T data;
 
     public ResponseVO() {
+    }
+
+    public ResponseVO(ApiEnum apiEnum) {
+        this.code = apiEnum.getCode();
+        this.msg = apiEnum.getMsg();
     }
 
     public ResponseVO(ResponseEnum status, T data) {

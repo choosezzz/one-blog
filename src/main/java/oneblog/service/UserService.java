@@ -10,16 +10,14 @@ public interface UserService {
 
     /**
      * 根据用户id查询
+     *
      * @param userId
      * @return
      */
+    User getUserByIdWithPwd(int userId, String password);
+
     User getUserById(int userId);
-    /**
-     * 根据用户相关参数查询用户
-     * @param user
-     * @return
-     */
-    User getUserWithPasswordByParam(User user);
+    User getUserByName(String userName);
 
     int registerUser(User user);
 }
