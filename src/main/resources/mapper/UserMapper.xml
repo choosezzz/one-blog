@@ -6,7 +6,7 @@
         <result column="phone" property="phone" jdbcType="VARCHAR"/>
         <result column="user_name" property="userName" jdbcType="VARCHAR"/>
         <result column="password" property="password" jdbcType="VARCHAR"/>
-        <result column="sex" property="sex" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="TINYINT"/>
         <result column="real_name" property="realName" jdbcType="VARCHAR"/>
         <result column="birthday" property="birthday" jdbcType="DATE"/>
         <result column="email" property="email" jdbcType="VARCHAR"/>
@@ -58,7 +58,7 @@
       #{salt,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, #{registTime,jdbcType=TIMESTAMP}, 
       #{status,jdbcType=TINYINT}, #{type,jdbcType=TINYINT})
   </insert>
-    <insert id="insertSelective" parameterType="oneblog.model.User">
+    <insert id="insertSelective" parameterType="oneblog.model.User"  useGeneratedKeys="true" keyProperty="userId">
         insert into user
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="userId != null">

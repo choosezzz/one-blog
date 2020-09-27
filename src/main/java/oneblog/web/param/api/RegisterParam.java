@@ -1,4 +1,4 @@
-package oneblog.web.request;
+package oneblog.web.param.api;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,16 +8,19 @@ import javax.validation.constraints.NotNull;
 
 /**
  * @Author dingshuangen
- * @Date 2020/9/27 10:53
+ * @Date 2020/9/27 19:19
  */
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class LoginParam extends ReqParam {
+public class RegisterParam {
 
     @NotNull(message = "用户名不能为空！")
     private String userName;
     @NotNull(message = "密码不能为空！")
     private String password;
-    private boolean rememberMe = false;
+
+    private int sex = 0;
+    private String phone;
+    private String email;
 }

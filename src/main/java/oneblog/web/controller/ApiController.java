@@ -4,8 +4,8 @@ import oneblog.model.User;
 import oneblog.service.UserRoleService;
 import oneblog.service.UserService;
 import oneblog.utils.ApiResult;
-import oneblog.utils.ResponseUtil;
-import oneblog.web.request.LoginParam;
+import oneblog.web.param.api.LoginParam;
+import oneblog.web.param.api.RegisterParam;
 import oneblog.web.response.ResponseVO;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -42,6 +42,7 @@ public class ApiController {
     public ResponseVO<User> login(@RequestBody @Valid LoginParam param, HttpSession session) {
         //对传参进行转义
         String userName = HtmlUtils.htmlEscape(param.getUserName());
+        param.setUserName(userName);
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(userName, param.getPassword(), param.isRememberMe());
         try {
@@ -51,16 +52,20 @@ public class ApiController {
             session.setAttribute("role", userRoleService.getUserRole(user.getUserId()));
 
         } catch (AuthenticationException e) {
-            return ApiResult.failed();
+            logger.error("[login-failed]:recordTime={}, traceId={}, userName={}, pwd={}", param.getTime(), param.getTraceId(), param.getUserName(), param.getPassword());
+            return ApiResult.loginFailed();
         }
-        return ApiResult.success();
+        return ApiResult.loginSuccess();
     }
 
     @PostMapping("/register")
-    public ResponseVO<User> register(@RequestBody @Valid User user) {
+    public ResponseVO<User> register(@RequestBody @Valid RegisterParam param) {
 
-        logger.error("param={}", user);
-        int data = userService.registerUser(user);
-        return ResponseUtil.success(user);
+        logger.error("param={}", param);
+        if (userService.existUser(param.getUserName())){
+           return ApiResult.userExist();
+        }
+        userService.registerUser(param);
+        return ApiResult.registerSuccess();
     }
 }

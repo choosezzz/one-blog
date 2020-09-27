@@ -1,6 +1,8 @@
 package oneblog.service;
 
 import oneblog.model.User;
+import oneblog.web.param.api.RegisterParam;
+import oneblog.web.response.ResponseVO;
 
 /**
  * @Author dingshuangen
@@ -19,5 +21,7 @@ public interface UserService {
     User getUserById(int userId);
     User getUserByName(String userName);
 
-    int registerUser(User user);
+    ResponseVO<User> registerUser(RegisterParam param);
+
+    boolean existUser(String userName);
 }

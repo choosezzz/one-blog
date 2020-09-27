@@ -5,12 +5,15 @@ import oneblog.model.UserRole;
 import oneblog.service.UserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @Author dingshuangen
  * @Date 2020/9/27 17:38
  */
 @Service
+@EnableTransactionManagement
 public class UserRoleServiceImpl implements UserRoleService {
 
     @Autowired
@@ -19,6 +22,7 @@ public class UserRoleServiceImpl implements UserRoleService {
     private RedisService redisService;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int addUserRole(UserRole userRole) {
         int insert = userRoleMapper.insert(userRole);
         if (insert > 0) {
@@ -45,6 +49,7 @@ public class UserRoleServiceImpl implements UserRoleService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int updateUserRole(UserRole userRole) {
         int update = userRoleMapper.updateUserRole(userRole);
         if (update > 0) {

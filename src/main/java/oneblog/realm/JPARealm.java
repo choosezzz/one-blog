@@ -33,17 +33,17 @@ public class JPARealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         String userName = token.getPrincipal().toString();
-        String userId = redisService.getUserIdByName(userName);
+        Integer userId = redisService.getUserIdByName(userName);
         User user;
-        if(StringUtils.isEmpty(userId)){
+        if (userId == null || userId <= 0) {
             user = userService.getUserByName(userName);
-        }else {
-            user = userService.getUserById(Integer.parseInt(userId));
+        } else {
+            user = userService.getUserById(userId);
         }
         if (user == null) {
             return null;
         }
-        redisService.setUserId(userName, String.valueOf(user.getUserId()));
+        redisService.setUserId(userName, user.getUserId());
         String passwordInDB = user.getPassword();
         String salt = user.getSalt();
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(userId, passwordInDB, ByteSource.Util.bytes(salt),

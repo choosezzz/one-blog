@@ -34,18 +34,22 @@ public class RedisService {
         setExpireKV(key, value, expire);
     }
 
-    public String getUserIdByName(String name) {
+    public Integer getUserIdByName(String name) {
         if (StringUtils.isEmpty(name)) {
             return null;
         }
-        return getValue(USER_NAME_ID + name);
+        String value = getValue(USER_NAME_ID + name);
+        if (StringUtils.isNotEmpty(value)){
+            return Integer.parseInt(value);
+        }
+        return null;
     }
 
-    public void setUserId(String name, String id) {
+    public void setUserId(String name, Integer id) {
         if (StringUtils.isEmpty(name)) {
             return;
         }
-        setKV(USER_NAME_ID + name, id);
+        setKV(USER_NAME_ID + name, String.valueOf(id));
     }
 
     public void setUserRoleId(Integer userId, Integer roleId) {
