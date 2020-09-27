@@ -10,13 +10,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @Author dingshuangen
  * @Date 2020/9/25 15:33
  */
-
+@RequestMapping("/u")
 @RestController
 public class UserController {
 
@@ -24,6 +25,7 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
     @PostMapping("/login")
     public ResponseVO<User> login(@RequestBody @NotNull User user){
 
@@ -31,5 +33,13 @@ public class UserController {
         User result = userService.getUserWithPasswordByParam(user);
 
         return ResponseUtil.success(result);
+    }
+
+    @PostMapping("/register")
+    public ResponseVO<User> register(@RequestBody @NotNull User user){
+
+        logger.error("param={}", user);
+        int data = userService.registerUser(user);
+        return ResponseUtil.success(user);
     }
 }

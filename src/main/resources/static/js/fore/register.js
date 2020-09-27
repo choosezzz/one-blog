@@ -1,9 +1,9 @@
 $(function(){
     const data4Vue = {
-        uri:'users',
+        uri:'/u/register',
         message: '',
         show: false,
-        user:{username:'',password:'','checkPassword':''}
+        user:{userName:'',password:'','checkPassword':''}
     };
     //ViewModel
     const vue = new Vue({
@@ -48,6 +48,7 @@ $(function(){
                 }
 
                 const url = this.uri;
+                alert(url)
                 axios.post(url,this.user).then(function(response){
                     if (response.data.code == 1) {
                         vue.show = true;

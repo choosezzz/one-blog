@@ -10,10 +10,10 @@
     <div id="main">
         <div th:replace="include/tips::html"></div>
         <div class="work-space">
-            <p class="top"><a href="/login" class="active">登录</a> <span class="dot">·</span> <a href="/register">注册</a></p>
+            <p class="top"><a href="/c/login" class="active">登录</a> <span class="dot">·</span> <a href="/c/register">注册</a></p>
             <div class="am-input-group am-input-group-primary" style="width: 300px;">
                 <span class="am-input-group-label" style="font-size: 15px;"><i class="am-icon-user"></i></span>
-                <input type="text" class="am-form-field" placeholder="昵称" v-model.trim="user.username" @keyup.enter="login">
+                <input type="text" class="am-form-field" placeholder="昵称" v-model.trim="user.userName" @keyup.enter="login">
             </div>
             <div class="am-input-group am-input-group-primary" style="width: 300px; margin-top: 10px;">
                 <span class="am-input-group-label"><i class="am-icon-lock"></i></span>

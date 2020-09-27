@@ -56,7 +56,7 @@
                                                     <div th:replace="include/page::html" ></div>
                                                 </div>
                                                 <div v-else class="less-than-zero">
-                                                    <img src="/img/null.png">
+                                                    <img src="../img/null.png">
                                                     <p>空空如也</p>
                                                 </div>
                                             </div>
@@ -82,7 +82,7 @@
                                                         </div>
 
                                                         <div style="margin-bottom: 20px; margin-left: -9px;">
-                                                            <img src="/img/admin/caret.png" class="admin-comment-caret">
+                                                            <img src="../img/admin/caret.png" class="admin-comment-caret">
                                                             <div class="admin-comment-tips">
                                                                 <a :href="'/article?aid='+like.article.id" target="_blank">{{like.article.title}}</a>
                                                                 <p style="margin-top: 5px;">{{like.article.description}}</p>
@@ -163,9 +163,9 @@
     <!--手机适配显示左侧按钮-->
     <a href="#" class="am-icon-btn am-icon-th-list am-show-sm-only admin-menu" data-am-offcanvas="{target: '#admin-offcanvas'}"></a>
 
-<script src="js/all.js"></script>
-<script src="js/scroll.js"></script>
-<script src="js/fore/activity.js"></script>
+<script src="../js/all.js"></script>
+<script src="../js/scroll.js"></script>
+<script src="../js/fore/activity.js"></script>
 <script>
     var data4Vue = {
         item: ''

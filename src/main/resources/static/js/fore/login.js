@@ -1,10 +1,10 @@
 $(function(){
     const data4Vue = {
-        uri:'login',
+        uri:'/u/login',
         message: '',
         show: false,
         rememberMe: false,
-        user:{username:'',password:''}
+        user:{userName:'',password:''}
     };
     //ViewModel
     const vue = new Vue({
@@ -15,7 +15,7 @@ $(function(){
         },
         methods: {
             login: function () {
-                if (isEmpty(this.user.username)) {
+                if (isEmpty(this.user.userName)) {
                     vue.message = "\"昵称\"不能为空!";
                     vue.show = true;
                     setTimeout(function () {
@@ -35,7 +35,7 @@ $(function(){
                 const url = this.uri + "?rememberMe=" + vue.rememberMe;
                 axios.post(url,this.user).then(function(response){
                     if (response.data.code == 1) {
-                        location.href = "/";
+                        location.href = "/c/";
                     } else {
                         vue.show = true;
                         vue.message = "昵称或密码错误!";

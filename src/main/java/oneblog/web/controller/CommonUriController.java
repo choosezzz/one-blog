@@ -21,7 +21,7 @@ public class CommonUriController {
 
     @GetMapping(value = "/", name = "重定向到默认页")
     public String home() {
-        return "redirect:/index";
+        return "redirect:/c/index";
     }
 
     @GetMapping(value = "/article", name = "文章浏览")
@@ -29,13 +29,56 @@ public class CommonUriController {
         return "/fore/show";
     }
 
-    @GetMapping("/404")
+    @GetMapping(value="/register")
+    public String register(){
+        return "/fore/register";
+    }
+    @GetMapping(value="/login")
+    public String login() {
+        return "fore/login";
+    }
+    @GetMapping(value="/page404")
     public String page404() {
         return "error/404";
     }
-
-    @GetMapping(value = "/500")
+    @GetMapping(value="/page500")
     public String page500() {
         return "error/500";
+    }
+    @GetMapping(value="/categories")
+    public String categories() {
+        return "fore/categories";
+    }
+    @GetMapping(value="/date")
+    public String date() {
+        return "fore/date";
+    }
+    @GetMapping(value="/tags")
+    public String tags() {
+        return "fore/tags";
+    }
+    @GetMapping(value="/article_of_tag")
+    public String articleOfTag() {
+        return "fore/article_of_tag";
+    }
+    @GetMapping(value="/friendlylink")
+    public String friendLink() {
+        return "fore/link";
+    }
+    @GetMapping(value="/search")
+    public String search() {
+        return "fore/search";
+    }
+    @GetMapping(value="/activity")
+    public String activity() {
+        return "fore/activity";
+    }
+    @GetMapping(value="/message")
+    public String message() {
+        return "fore/message";
+    }
+    @GetMapping(value="/home")
+    public String page(){
+        return "/fore/home";
     }
 }

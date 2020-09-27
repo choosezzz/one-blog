@@ -25,4 +25,9 @@ public class UserServiceImpl implements UserService {
     public User getUserWithPasswordByParam(User user) {
         return userMapper.selectWithPasswordBySelective(user);
     }
+
+    @Override
+    public int registerUser(User user) {
+        return userMapper.insertSelective(user);
+    }
 }

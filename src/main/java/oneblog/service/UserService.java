@@ -20,4 +20,6 @@ public interface UserService {
      * @return
      */
     User getUserWithPasswordByParam(User user);
+
+    int registerUser(User user);
 }
