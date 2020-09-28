@@ -1,42 +1,49 @@
 $(function(){
     const data4Vue = {
-        uri: 'user',
+        uri: '/c/user',
         message: '',
         show: false,
-        user: {birthdayStr: "0000-00-00", face: ""},
+        user: {},
         file: ""
     };
     //ViewModel
     const vue = new Vue({
         el: '#app',
         data: data4Vue,
-        mounted:function(){ //mounted　表示这个 Vue 对象加载成功了
-            this.user_info();
+        mounted:function(){
+            this.userInfo();
         },
         methods: {
-            user_info:function(){
+            userInfo:function(){
                 const url = this.uri + "/info";
                 axios.get(url).then(function(response) {
-                    vue.user = response.data;
-                    vue.file = response.data.face;
-                    document.getElementById("doc-datepicker").value=vue.user.birthdayStr;
+                    if (response.data.code == 2001){
+                        vue.user = response.data.data;
+                        if (vue.user.birthday != null){
+                            document.getElementById("doc-datepicker").value=vue.user.birthday;
+                        }
+                    }else {
+                        vue.show = true;
+                        vue.message = response.data.msg;
+                        setTimeout(function () {
+                            vue.show = false;
+                        }, 3000)
+                    }
                 });
             },
             update:function(){
                 const url = this.uri+"/update";
-                vue.user.birthdayStr = document.getElementById("doc-datepicker").value;
-                vue.user.face = vue.file;
-                axios.put(url, vue.user).then(function(response) {
-                    if (response.data.id > 0) {
+                vue.user.birthday = document.getElementById("doc-datepicker").value;
+                axios.post(url, vue.user).then(function(response) {
+                    if (response.data.code == 2001) {
                         vue.show = true;
                         vue.message = "更新成功";
                         setTimeout(function () {
                             vue.show = false;
                         }, 3000)
                     } else {
-                        vue.file = response.data.image;
                         vue.show = true;
-                        vue.message = "上传失败";
+                        vue.message = response.data.msg;
                         setTimeout(function () {
                             vue.show = false;
                         }, 3000)

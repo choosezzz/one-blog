@@ -4,8 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import oneblog.web.param.ReqParam;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 /**
  * @Author dingshuangen
@@ -21,5 +23,9 @@ public class UserParam extends ReqParam {
     private String userName;
     private String phone;
     private String email;
+    private Integer sex;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date birthday;
+    private String introduction;
     private Integer roleId;
 }

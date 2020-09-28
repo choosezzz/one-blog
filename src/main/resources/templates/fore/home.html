@@ -24,7 +24,7 @@
                                             <div class="am-u-sm-8">
                                                 <div class="am-form-group">
                                                     <label for="doc-ipt-name-1">昵称</label>
-                                                    <input type="email" class="" id="doc-ipt-name-1" placeholder="input your name here" disabled :value="user.username" v-model.trim="user.username">
+                                                    <input type="email" class="" id="doc-ipt-name-1" placeholder="input your name here" disabled :value="user.userName" v-model.trim="user.userName">
                                                 </div>
     
                                                 <div class="am-form-group">
@@ -39,9 +39,10 @@
 
                                                 <div class="am-form-group pub-blog-form">
                                                     <label class="col-sm-2 am-form-label">性别</label>
-                                                    <select v-model.trim="user.gender">
+                                                    <select v-model.trim="user.sex">
                                                         <option value="1">男</option>
                                                         <option value="2">女</option>
+                                                        <option value="0">保密</option>
                                                     </select>
                                                 </div>
     
@@ -52,7 +53,7 @@
     
                                                 <div class="am-form-group">
                                                     <label for="doc-ta-1">个性签名</label>
-                                                    <textarea class="" rows="5" id="doc-ta-1" :value="user.personalBrief" v-model.trim="user.personalBrief"></textarea>
+                                                    <textarea class="" rows="5" id="doc-ta-1" :value="user.introduction" v-model.trim="user.introduction"></textarea>
                                                 </div>
     
                                                 <div class="am-form-group am-form-file">
@@ -69,7 +70,7 @@
                                                 <p><button @click.prevent="update" class="am-btn am-btn-default">保存</button></p>
                                             </div>
                                             <div class="am-u-sm-4">
-                                                <img :src="file" class="face-img">
+                                                <img :src="user.avatar" class="face-img">
                                             </div>
                                         </fieldset>
                                     </form>

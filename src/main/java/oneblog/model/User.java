@@ -1,5 +1,6 @@
 package oneblog.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
@@ -26,6 +27,8 @@ public class User {
 
     private String realName;
 
+
+    @JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
     private Date birthday;
 
     private String email;

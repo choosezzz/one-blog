@@ -51,9 +51,10 @@ $(function(){
                 axios.post(url,this.user).then(function(response){
                     if (response.data.code == 6004) {
                         vue.show = true;
-                        vue.message = "注册成功!";
+                        vue.message = "注册成功！ 正在跳转登录页面...";
                         setTimeout(function () {
                             vue.show = false;
+                            location.href="/c/login";
                         }, 3000)
                     } else {
                         vue.show = true;
