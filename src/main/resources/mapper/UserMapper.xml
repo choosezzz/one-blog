@@ -13,13 +13,14 @@
         <result column="introduction" property="introduction" jdbcType="VARCHAR"/>
         <result column="salt" property="salt" jdbcType="VARCHAR"/>
         <result column="avatar" property="avatar" jdbcType="VARCHAR"/>
-        <result column="regist_time" property="registTime" jdbcType="TIMESTAMP"/>
+        <result column="register_time" property="registerTime" jdbcType="TIMESTAMP"/>
         <result column="status" property="status" jdbcType="TINYINT"/>
+        <result column="role_id" property="roleId" jdbcType="TINYINT"/>
         <result column="type" property="type" jdbcType="TINYINT"/>
     </resultMap>
     <sql id="Base_Column_List">
     user_id, phone, user_name, password, sex, real_name, birthday, email, introduction,
-    salt, avatar, regist_time, status, type
+    salt, avatar, register_time, status, `type`, role_id
   </sql>
     <select id="selectByIdWithPwd" resultMap="BaseResultMap">
         select
@@ -41,6 +42,11 @@
         from user
         where user_name = #{name,jdbcType=VARCHAR}
     </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+    </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from user
@@ -50,12 +56,12 @@
     insert into user (user_id, phone, user_name, 
       password, sex, real_name, 
       birthday, email, introduction, 
-      salt, avatar, regist_time, 
+      salt, avatar, register_time,
       status, type)
     values (#{userId,jdbcType=INTEGER}, #{phone,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
       #{password,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, 
       #{birthday,jdbcType=DATE}, #{email,jdbcType=VARCHAR}, #{introduction,jdbcType=VARCHAR}, 
-      #{salt,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, #{registTime,jdbcType=TIMESTAMP}, 
+      #{salt,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, #{registerTime,jdbcType=TIMESTAMP},
       #{status,jdbcType=TINYINT}, #{type,jdbcType=TINYINT})
   </insert>
     <insert id="insertSelective" parameterType="oneblog.model.User"  useGeneratedKeys="true" keyProperty="userId">
@@ -94,8 +100,8 @@
             <if test="avatar != null">
                 avatar,
             </if>
-            <if test="registTime != null">
-                regist_time,
+            <if test="registerTime != null">
+                register_time,
             </if>
             <if test="status != null">
                 status,
@@ -138,8 +144,8 @@
             <if test="avatar != null">
                 #{avatar,jdbcType=VARCHAR},
             </if>
-            <if test="registTime != null">
-                #{registTime,jdbcType=TIMESTAMP},
+            <if test="registerTime != null">
+                #{registerTime,jdbcType=TIMESTAMP},
             </if>
             <if test="status != null">
                 #{status,jdbcType=TINYINT},
@@ -182,14 +188,17 @@
             <if test="avatar != null">
                 avatar = #{avatar,jdbcType=VARCHAR},
             </if>
-            <if test="registTime != null">
-                regist_time = #{registTime,jdbcType=TIMESTAMP},
+            <if test="registerTime != null">
+                register_time = #{registerTime,jdbcType=TIMESTAMP},
             </if>
             <if test="status != null">
                 status = #{status,jdbcType=TINYINT},
             </if>
             <if test="type != null">
                 type = #{type,jdbcType=TINYINT},
+            </if>
+            <if test="roleId != null">
+                role_id = #{roleId,jdbcType=TINYINT},
             </if>
         </set>
         where user_id = #{userId,jdbcType=INTEGER}
@@ -206,7 +215,7 @@
       introduction = #{introduction,jdbcType=VARCHAR},
       salt = #{salt,jdbcType=VARCHAR},
       avatar = #{avatar,jdbcType=VARCHAR},
-      regist_time = #{registTime,jdbcType=TIMESTAMP},
+      register_time = #{registerTime,jdbcType=TIMESTAMP},
       status = #{status,jdbcType=TINYINT},
       type = #{type,jdbcType=TINYINT}
     where user_id = #{userId,jdbcType=INTEGER}

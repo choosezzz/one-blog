@@ -1,5 +1,8 @@
 package oneblog.web.intercepter;
 
+import oneblog.constant.ApiConstant;
+import oneblog.utils.CookieUtil;
+import oneblog.utils.IpUtil;
 import oneblog.utils.TraceUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.UUID;
 
 /**
@@ -21,6 +25,13 @@ public class UserInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         TraceUtil.setTraceId(UUID.randomUUID().toString().replace("-", ""));
+        //会话id
+        String sessionId = CookieUtil.getCookie(request, ApiConstant.JSESSIONID);
+        //获取IP地址
+        String ipAddr = IpUtil.getIpAddr(request);
+        //请求路径
+        String contextPath = request.getSession().getServletContext().getContextPath();
+
         return true;
     }
 

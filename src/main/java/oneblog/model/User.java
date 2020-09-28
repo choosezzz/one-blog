@@ -22,7 +22,7 @@ public class User {
     @JsonIgnore
     private String password;
 
-    private int sex;
+    private Integer sex;
 
     private String realName;
 
@@ -32,12 +32,14 @@ public class User {
 
     private String introduction;
 
-    @JsonInclude
+    @JsonIgnore
     private String salt;
 
     private String avatar;
 
-    private Date registTime;
+    private Date registerTime;
+
+    private Integer roleId;
 
     private Byte status;
 

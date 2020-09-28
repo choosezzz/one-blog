@@ -15,7 +15,6 @@ import java.util.concurrent.TimeUnit;
 public class RedisService {
 
     private static final String USER_NAME_ID = "un_id_";
-    private static final String USER_ROLE_ID = "ur_id_";
 
     private static final long ONE_DAY = 24 * 60 * 60;
 
@@ -50,18 +49,6 @@ public class RedisService {
             return;
         }
         setKV(USER_NAME_ID + name, String.valueOf(id));
-    }
-
-    public void setUserRoleId(Integer userId, Integer roleId) {
-        setKV(USER_ROLE_ID + userId, String.valueOf(roleId));
-    }
-
-    public Integer getUserRoleId(Integer userId) {
-        String value = getValue(USER_ROLE_ID + userId);
-        if (StringUtils.isNotEmpty(value)) {
-            return Integer.parseInt(value);
-        }
-        return null;
     }
 
     private void setKV(String key, String value) {

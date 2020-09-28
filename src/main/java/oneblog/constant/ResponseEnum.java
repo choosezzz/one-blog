@@ -7,7 +7,12 @@ package oneblog.constant;
 public enum ResponseEnum {
     SUCCESS(2001, "OK"),
     ERROR(4001, "ERROR"),
-    PARAM_INVALID(4002, "参数检验失败。");
+    PARAM_INVALID(4002, "参数检验失败。"),
+    OPERATION_FAILED(4003, "操作失败，请稍后重试。"),
+
+
+
+    ;
 
 
     private String msg;

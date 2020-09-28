@@ -1,7 +1,11 @@
 package oneblog.dao;
 
 import oneblog.model.Role;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
+@Repository
 public interface RoleMapper {
     int deleteByPrimaryKey(Integer roleId);
 
@@ -14,4 +18,6 @@ public interface RoleMapper {
     int updateByPrimaryKeySelective(Role record);
 
     int updateByPrimaryKey(Role record);
+
+    List<Role> selectAll();
 }

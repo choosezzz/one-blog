@@ -29,4 +29,6 @@ public class ApiConstant {
     public static final byte TYPE_REGISTER = 1; // 注册用户
     public static final byte TYPE_VISITOR = 2;  // 访客
 
+    public static final String JSESSIONID = "JSESSIONID";
+
 }

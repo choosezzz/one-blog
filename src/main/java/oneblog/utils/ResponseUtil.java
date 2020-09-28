@@ -25,7 +25,7 @@ public class ResponseUtil {
         return new ResponseVO(ResponseEnum.ERROR, data);
     }
 
-    public static ResponseVO ResponseForNull(ResponseEnum responseEnum) {
+    public static ResponseVO forNull(ResponseEnum responseEnum) {
         return new ResponseVO(responseEnum, null);
     }
 }

@@ -1,9 +1,10 @@
 package oneblog.web.controller;
 
+import com.alibaba.fastjson.JSON;
 import oneblog.model.User;
-import oneblog.service.UserRoleService;
 import oneblog.service.UserService;
 import oneblog.utils.ApiResult;
+import oneblog.utils.ResponseUtil;
 import oneblog.web.param.api.LoginParam;
 import oneblog.web.param.api.RegisterParam;
 import oneblog.web.response.ResponseVO;
@@ -22,6 +23,7 @@ import org.springframework.web.util.HtmlUtils;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @Author dingshuangen
@@ -35,8 +37,6 @@ public class ApiController {
 
     @Autowired
     private UserService userService;
-    @Autowired
-    private UserRoleService userRoleService;
 
     @PostMapping("/login")
     public ResponseVO<User> login(@RequestBody @Valid LoginParam param, HttpSession session) {
@@ -49,7 +49,7 @@ public class ApiController {
             subject.login(token);
             User user = userService.getUserByName(userName);
             session.setAttribute("user", user);
-            session.setAttribute("role", userRoleService.getUserRole(user.getUserId()));
+            session.setAttribute("roleId", user.getRoleId());
 
         } catch (AuthenticationException e) {
             logger.error("[login-failed]:recordTime={}, traceId={}, userName={}, pwd={}", param.getTime(), param.getTraceId(), param.getUserName(), param.getPassword());
@@ -62,10 +62,13 @@ public class ApiController {
     public ResponseVO<User> register(@RequestBody @Valid RegisterParam param) {
 
         logger.error("param={}", param);
-        if (userService.existUser(param.getUserName())){
-           return ApiResult.userExist();
-        }
-        userService.registerUser(param);
-        return ApiResult.registerSuccess();
+        return userService.registerUser(param);
+    }
+
+    @PostMapping("/users")
+    public ResponseVO<List<User>> userList() {
+        List<User> allUser = userService.getAllUser();
+        logger.error("user List = {}", JSON.toJSONString(allUser));
+        return ResponseUtil.success(allUser);
     }
 }

@@ -28,28 +28,31 @@
                                         <table class="table am-table am-table-bd am-table-striped admin-content-table  am-animation-slide-right">
                                             <thead>
                                             <tr>
-                                                <th>用户昵称</th><th>注册时间</th><th>状态</th><th>角色</th><th>操作</th>
+                                                <th>用户ID</th><th>用户昵称</th><th>注册时间</th><th>状态</th><th>角色</th><th>操作</th>
                                             </tr>
                                             </thead>
                                             <tbody class="tables">
                                                 <tr id="" v-for="user in beans">
-                                                    <td><a href="#" style="color: #3bb4f2;">{{user.username}}</a></td>
+                                                    <td><a href="#" style="color: #3bb4f2;">{{user.userId}}</a></td>
+                                                    <td><a href="#" style="color: #3bb4f2;">{{user.userName}}</a></td>
                                                     <td>{{user.registerTime | formatDateTimeFilter}}</td>
                                                     <td v-if="user.status == 1">正常</td>
                                                     <td v-else-if="user.status == 2">屏蔽</td>
                                                     <td v-else-if="user.status == 3">注销</td>
                                                     <td>
-                                                        <select v-model.trim="user.role">
-                                                            <option value="1" @click="authorize(user.username,1)">普通用户</option>
-                                                            <option value="2" @click="authorize(user.username,2)">管理员</option>
-                                                            <option value="3" @click="authorize(user.username,3)">超级管理员</option>
+                                                        <select @change="authorize(user.userId,$event)">
+                                                            <option  v-for="role in roles"
+                                                                     :value="role.roleId"
+                                                                     :selected="user.roleId == role.roleId">
+                                                                {{role.roleName}}
+                                                            </option>
                                                         </select>
                                                     </td>
                                                     <td>
                                                         <div>
-                                                            <a href="#nowhere" @click="update(user.username,1)"><button class="articleDeleteBtn articleDelete am-btn am-btn-warning">正常</button></a>
-                                                            <a href="#nowhere" @click="update(user.username,2)"><button class="articleDeleteBtn articleDelete am-btn am-btn-danger">屏蔽</button></a>
-                                                            <a href="#nowhere" @click="update(user.username,3)"><button class="articleDeleteBtn articleDelete am-btn am-btn-danger">注销</button></a>
+                                                            <a href="#nowhere" @click="update(user.userName,1)"><button class="articleDeleteBtn articleDelete am-btn am-btn-warning">正常</button></a>
+                                                            <a href="#nowhere" @click="update(user.userName,2)"><button class="articleDeleteBtn articleDelete am-btn am-btn-danger">屏蔽</button></a>
+                                                            <a href="#nowhere" @click="update(user.userName,3)"><button class="articleDeleteBtn articleDelete am-btn am-btn-danger">注销</button></a>
                                                         </div>
                                                     </td>
                                                 </tr>
