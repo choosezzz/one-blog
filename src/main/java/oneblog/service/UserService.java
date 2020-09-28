@@ -26,7 +26,7 @@ public interface UserService {
 
     User getUserByName(String userName);
 
-    ResponseVO<User> registerUser(RegisterParam param);
+    int registerUser(RegisterParam param);
 
     boolean existUser(String userName);
 

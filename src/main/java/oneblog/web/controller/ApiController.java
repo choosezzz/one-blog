@@ -15,22 +15,19 @@ import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.HtmlUtils;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.List;
 
 /**
  * @Author dingshuangen
  * @Date 2020/9/25 15:33
  */
 @RequestMapping("/api")
-@RestController
+@Controller
 public class ApiController {
 
     private static final Logger logger = LoggerFactory.getLogger(ApiController.class);
@@ -38,6 +35,7 @@ public class ApiController {
     @Autowired
     private UserService userService;
 
+    @ResponseBody
     @PostMapping("/login")
     public ResponseVO<User> login(@RequestBody @Valid LoginParam param, HttpSession session) {
         //对传参进行转义
@@ -48,6 +46,9 @@ public class ApiController {
         try {
             subject.login(token);
             User user = userService.getUserByName(userName);
+            //数据脱敏
+            user.setPassword("-");
+            user.setSalt("-");
             session.setAttribute("user", user);
             session.setAttribute("roleId", user.getRoleId());
 
@@ -58,17 +59,29 @@ public class ApiController {
         return ApiResult.loginSuccess();
     }
 
+    @ResponseBody
     @PostMapping("/register")
     public ResponseVO<User> register(@RequestBody @Valid RegisterParam param) {
 
         logger.error("param={}", param);
-        return userService.registerUser(param);
+
+        //验证是否存在
+        if (userService.existUser(param.getUserName())) {
+            return ApiResult.userExist();
+        }
+        int insert = userService.registerUser(param);
+        if (insert > 0) {
+            return ApiResult.registerSuccess();
+        }
+        return ApiResult.registerFailed();
     }
 
-    @PostMapping("/users")
-    public ResponseVO<List<User>> userList() {
-        List<User> allUser = userService.getAllUser();
-        logger.error("user List = {}", JSON.toJSONString(allUser));
-        return ResponseUtil.success(allUser);
+    @RequestMapping(value = "/logout", name = "退出系统")
+    public String logout() {
+        Subject subject = SecurityUtils.getSubject();
+        if (subject.isRemembered() || subject.isAuthenticated()) {
+            subject.logout();
+        }
+        return "redirect:/c/index";
     }
 }

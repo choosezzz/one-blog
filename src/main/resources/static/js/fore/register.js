@@ -1,6 +1,6 @@
 $(function(){
     const data4Vue = {
-        uri:'/u/register',
+        uri:'/api/register',
         message: '',
         show: false,
         user:{userName:'',password:'','checkPassword':''}
@@ -14,7 +14,7 @@ $(function(){
         },
         methods: {
             register: function () {
-                if (isEmpty(this.user.username)) {
+                if (isEmpty(this.user.userName)) {
                     vue.message = "\"昵称\"不能为空!";
                     vue.show = true;
                     setTimeout(function () {
@@ -48,9 +48,8 @@ $(function(){
                 }
 
                 const url = this.uri;
-                alert(url)
                 axios.post(url,this.user).then(function(response){
-                    if (response.data.code == 1) {
+                    if (response.data.code == 6004) {
                         vue.show = true;
                         vue.message = "注册成功!";
                         setTimeout(function () {
@@ -58,7 +57,7 @@ $(function(){
                         }, 3000)
                     } else {
                         vue.show = true;
-                        vue.message = response.data.message;
+                        vue.message = response.data.msg;
                         setTimeout(function () {
                             vue.show = false;
                         }, 3000)

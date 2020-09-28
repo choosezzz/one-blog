@@ -20,7 +20,7 @@
                 <input type="password" class="am-form-field" placeholder="密码" v-model.trim="user.password" @keyup.enter="login">
             </div>
             <label class="am-checkbox">
-                <input type="checkbox" v-model="rememberMe" value="" data-am-ucheck> 记住我
+                <input type="checkbox" v-model.trim="user.rememberMe" value="" data-am-ucheck> 记住我
             </label>
             <a class="button" href="#nowhere" @click="login">登录</a>
         </div>

@@ -29,7 +29,8 @@
                             <ul class="am-dropdown-content">
                                 <li><a href="">动态</a></li>
                                 <li><a href="">消息</a></li>
-                                <li th:if="${1==session.roleId}"><a href="/m/admin">管理员</a></li>
+                                <li th:if="${1==session.roleId}"><a href="/m/admin">超级管理员</a></li>
+                                <li th:if="${2==session.roleId}"><a href="/m/admin">管理员</a></li>
                                 <li class="am-divider"></li>
                                 <li><a href="/api/logout">退出登录</a>
                                 </li>
@@ -37,12 +38,12 @@
                         </div>
                     </div>
                     <div class="am-topbar-right" th:unless="${#httpServletRequest.remoteUser}">
-                        <a href="/api/register" class="am-btn am-btn-primary am-topbar-btn am-btn-sm" style="color: white">注册</a>
+                        <a href="/c/register" class="am-btn am-btn-primary am-topbar-btn am-btn-sm" style="color: white">注册</a>
                     </div>
                     <div class="am-topbar-right" th:unless="${#httpServletRequest.remoteUser}">
-                        <a href="/api/login" class="loginBtn am-btn am-btn-primary am-topbar-btn am-btn-sm" style="color: white">登录</a>
+                        <a href="/c/login" class="loginBtn am-btn am-btn-primary am-topbar-btn am-btn-sm" style="color: white">登录</a>
                     </div>
-                    <div class="am-topbar-right writing am-hide-md-down">
+                    <div class="am-topbar-right writing am-hide-md-down" th:if="${session != null && session.user != null}">
                         <a  href="/m/write_article" target="_blank" style="text-decoration: none">
                             <img class="am-circle" src="https://zhy-myblog.oss-cn-shenzhen.aliyuncs.com/static/img/writing.png">
                             <span class="write-word">写博客</span>

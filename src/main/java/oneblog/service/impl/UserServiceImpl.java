@@ -10,6 +10,8 @@ import oneblog.web.param.api.RegisterParam;
 import oneblog.web.response.ResponseVO;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.SimpleHash;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,8 @@ import java.util.List;
 @Service
 @EnableTransactionManagement
 public class UserServiceImpl implements UserService {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     @Autowired
     private UserMapper userMapper;
     @Autowired
@@ -49,12 +53,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ResponseVO registerUser(RegisterParam param) {
+    public int registerUser(RegisterParam param) {
 
-        //验证是否存在
-        if (existUser(param.getUserName())) {
-            return ApiResult.userExist();
-        }
+
         User user = new User();
         user.setUserName(HtmlUtils.htmlEscape(param.getUserName()));
         user.setAvatar(ApiConstant.DEFAULT_AVATAR);
@@ -74,10 +75,10 @@ public class UserServiceImpl implements UserService {
         user.setRoleId(ApiConstant.COMMON_USER);
         //写入用户数据
         int insert = userMapper.insertSelective(user);
-        if (insert > 0) {
-            return ApiResult.registerSuccess();
+        if (insert <= 0){
+            logger.error("registerUser failed:param = {}", param);
         }
-        return ApiResult.registerFailed();
+        return insert;
     }
 
     @Override

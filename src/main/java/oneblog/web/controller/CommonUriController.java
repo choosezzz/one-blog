@@ -18,12 +18,6 @@ public class CommonUriController {
     public String index() {
         return "/fore/index";
     }
-
-    @GetMapping(value = "/", name = "重定向到默认页")
-    public String home() {
-        return "redirect:/c/index";
-    }
-
     @GetMapping(value = "/article", name = "文章浏览")
     public String viewArticle() {
         return "/fore/show";

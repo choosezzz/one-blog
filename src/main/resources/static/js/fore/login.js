@@ -1,16 +1,15 @@
 $(function(){
     const data4Vue = {
-        uri:'/u/login',
+        uri:'/api/login',
         message: '',
         show: false,
-        rememberMe: false,
-        user:{userName:'',password:''}
+        user:{userName:'',password:'',rememberMe:false}
     };
     //ViewModel
     const vue = new Vue({
         el: '#app',
         data: data4Vue,
-        mounted:function(){ //mounted　表示这个 Vue 对象加载成功了
+        mounted:function(){
 
         },
         methods: {
@@ -32,13 +31,13 @@ $(function(){
                     return;
                 }
 
-                const url = this.uri + "?rememberMe=" + vue.rememberMe;
+                const url = this.uri;
                 axios.post(url,this.user).then(function(response){
-                    if (response.data.code == 1) {
+                    if (response.data.code == 6000) {
                         location.href = "/c/";
                     } else {
                         vue.show = true;
-                        vue.message = "昵称或密码错误!";
+                        vue.message = response.data.msg;
                         setTimeout(function () {
                             vue.show = false;
                         }, 3000)

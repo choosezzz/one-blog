@@ -23,7 +23,7 @@
                         <div class="clear"></div>
                         <div id="connection" style="font-size: 14px">
                             <small style="font-size: 16px; color: #808080ad; display: block; margin-bottom: 10px;"><span class="am-icon-credit-card"></span> 好好学习，天天向上。</small>
-                            <small style="font-size: 16px;color: #808080ad;"><span class="am-icon-wechat"></span> 微信公众号：One-Blog</small>
+                            <small style="font-size: 16px;color: #808080ad;"><span class="am-icon-wechat"></span> 微信公众号：【暂无】</small>
                             <div id="follow">
                                 <button class="myCardBtn am-btn am-btn-secondary am-round attention_btn" data-am-offcanvas="{target: '#offCanvas'}">扫描二维码关注我</button>
                             </div>
@@ -80,7 +80,7 @@
                             <div class="am-list-news-bd">
                                 <ul class="am-list">
                                     <li class="am-g am-list-item-dated index-left-li" v-for="mc in mostComment">
-                                        <a class="newCommentTitle am-list-item-hd" :href="'/article?aid='+mc.id" style="padding-bottom: 5px" :title="mc.title">{{mc.title}}</a>
+                                        <a class="newCommentTitle am-list-item-hd" :href="'/m/article?aid='+mc.id" style="padding-bottom: 5px" :title="mc.title">{{mc.title}}</a>
                                         <span class="am-list-date index-left-date">{{mc.publishDate | formatDateFilter}}</span>
                                     </li>
                                 </ul>
@@ -146,7 +146,7 @@
                             <div class="empty">
                                 <header class="article-header">
                                     <h1 itemprop="name">
-                                        <a class="article-title" :href="'/article?aid='+a.id" target="_blank">{{a.title}}</a>
+                                        <a class="article-title" :href="'/c/article?aid='+a.id" target="_blank">{{a.title}}</a>
                                     </h1>
                                     <div class="article-meta row">
                                         <span class="articleType am-badge am-badge-success">{{a.type}}</span>
@@ -155,7 +155,7 @@
                                         </div>
                                         <div class="originalAuthor">
                                             <i class="am-icon-user" title="发布者" v-if="a.type==='转载'&&a.originalAuthor.length>0"><a class="linkColor" :href="a.originalUrl"> {{a.originalAuthor}} </a></i>
-                                            <i class="am-icon-user" title="发布者" v-else> {{a.author.username}} </i>
+                                            <i class="am-icon-user" title="发布者" v-else> {{a.author.userName}} </i>
                                             <i class="am-icon-folder" title="文件夹"><a class="linkColor" :href="'/categories?cid='+a.category.id+'&name='+a.category.name+'&start=0'"> {{a.category.name}} </a></i>
                                             <i class="am-icon-eye" title="阅读数"> {{read_count_map[a.id]}} </i>
                                             <!--<i class="am-icon-comment" title="评论数"><span :id="forCommentId(a.id)"> {{comment_count_map(a.id)}} </span></i>-->
@@ -209,7 +209,7 @@
     var vue = new Vue({
         el: '#top',
         data: data4Vue,
-        mounted:function(){ //mounted　表示这个 Vue 对象加载成功了
+        mounted:function(){
 
         },
         methods: {
