@@ -1,10 +1,9 @@
 package oneblog.web.controller;
 
-import com.alibaba.fastjson.JSON;
 import oneblog.model.User;
 import oneblog.service.UserService;
 import oneblog.utils.ApiResult;
-import oneblog.utils.ResponseUtil;
+import oneblog.utils.FileUtil;
 import oneblog.web.param.api.LoginParam;
 import oneblog.web.param.api.RegisterParam;
 import oneblog.web.response.ResponseVO;
@@ -16,7 +15,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.HtmlUtils;
 
 import javax.servlet.http.HttpSession;
@@ -83,5 +86,15 @@ public class ApiController {
             subject.logout();
         }
         return "redirect:/c/index";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/upload-file", name = "上传文件接口")
+    public ResponseVO<String> uploadFile(MultipartFile file, HttpSession session) {
+        if (file == null || file.isEmpty()){
+            return ApiResult.uploadEmpty();
+        }
+        String s = FileUtil.writeFile(file);
+        return ApiResult.uploadSuccess(s);
     }
 }

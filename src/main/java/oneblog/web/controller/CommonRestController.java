@@ -5,15 +5,19 @@ import oneblog.constant.ApiConstant;
 import oneblog.constant.ResponseEnum;
 import oneblog.model.User;
 import oneblog.service.UserService;
+import oneblog.utils.ApiResult;
+import oneblog.utils.FileUtil;
 import oneblog.utils.ResponseUtil;
 import oneblog.utils.TraceUtil;
 import oneblog.web.param.adm.UserParam;
 import oneblog.web.response.ResponseVO;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -33,7 +37,7 @@ public class CommonRestController {
     @GetMapping(value = "/user/info", name = "查看用户信息")
     public ResponseVO<User> userInfo(HttpSession session) {
 
-        User user = null;
+        User user;
         Object attribute = session.getAttribute(ApiConstant.SESSION_USER);
         if (attribute != null && attribute instanceof User) {
             user = (User) attribute;
@@ -62,5 +66,35 @@ public class CommonRestController {
         }
         session.setAttribute(ApiConstant.SESSION_USER, user);
         return ResponseUtil.success(user);
+    }
+
+    @PostMapping(value = "/user/avatar", name = "修改头像")
+    public ResponseVO<String> changeAvatar(MultipartFile avatar, HttpSession session) {
+        User user;
+        Object attribute = session.getAttribute(ApiConstant.SESSION_USER);
+        if (attribute != null && attribute instanceof User) {
+            user = (User) attribute;
+        } else {
+            return ResponseUtil.forNull(ResponseEnum.PARAM_INVALID);
+        }
+        logger.info("userInfo: old user={}", user);
+        if (avatar == null || avatar.isEmpty()){
+            return ApiResult.uploadEmpty();
+        }
+
+        String path = FileUtil.writeFile(avatar);
+        logger.error("upload file, path = {}", path);
+        if (StringUtils.isNotEmpty(path)){
+            User newUser = new User();
+            newUser.setUserId(user.getUserId());
+            newUser.setAvatar(path);
+            int i = userService.updateByUserId(newUser);
+            if (i > 0){
+                user.setAvatar(path);
+                session.setAttribute(ApiConstant.SESSION_USER, user);
+                return ApiResult.uploadSuccess(path);
+            }
+        }
+        return ApiResult.uploadFailed();
     }
 }

@@ -30,4 +30,13 @@ public class ApiResult {
     public static ResponseVO userExist() {
         return new ResponseVO(ApiEnum.USER_EXIST);
     }
+    public static ResponseVO uploadFailed() {
+        return new ResponseVO(ApiEnum.UPLOAD_FAILED);
+    }
+    public static ResponseVO uploadEmpty() {
+        return new ResponseVO(ApiEnum.UPLOAD_EMPTY);
+    }
+    public static ResponseVO<String> uploadSuccess(String filePath) {
+        return new ResponseVO(ApiEnum.UPLOAD_SUCCESS, filePath);
+    }
 }

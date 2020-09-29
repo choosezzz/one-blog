@@ -51,12 +51,12 @@ $(function(){
                 });
             },
             thisFace: function (event) {
-                const url = this.uri+"/upload";
+                const url = this.uri + "/avatar";
                 var formData = new FormData();
-                formData.append("upload", event.target.files[0]);
+                formData.append("avatar", event.target.files[0]);
                 axios.post(url, formData).then(function(response) {
-                    if (response.data.uploaded === 1) {
-                        vue.file = response.data.image;
+                    if (response.data.code === 6007) {
+                        vue.user.avatar = response.data.data;
                         vue.show = true;
                         vue.message = "上传成功";
                         setTimeout(function () {
@@ -64,7 +64,7 @@ $(function(){
                         }, 3000)
                     } else {
                         vue.show = true;
-                        vue.message = "上传失败";
+                        vue.message = response.data.msg;
                         setTimeout(function () {
                             vue.show = false;
                         }, 3000)

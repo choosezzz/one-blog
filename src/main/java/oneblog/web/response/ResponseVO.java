@@ -22,7 +22,11 @@ public class ResponseVO<T> {
         this.code = apiEnum.getCode();
         this.msg = apiEnum.getMsg();
     }
-
+    public ResponseVO(ApiEnum apiEnum, T data) {
+        this.code = apiEnum.getCode();
+        this.msg = apiEnum.getMsg();
+        this.data = data;
+    }
     public ResponseVO(ResponseEnum status, T data) {
         this.msg = status.getMsg();
         this.code = status.getCode();

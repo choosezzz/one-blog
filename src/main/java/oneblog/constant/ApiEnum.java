@@ -12,6 +12,9 @@ public enum ApiEnum {
     USER_EXIST(6003, "该用户已存在！"),
     REGISTER_SUCCESS(6004, "注册成功！"),
     REGISTER_FAILED(6005, "注册失败，请稍后重试！"),
+    UPLOAD_FAILED(6006, "文件上传失败，请稍后重试！"),
+    UPLOAD_SUCCESS(6007, "文件上传成功！"),
+    UPLOAD_EMPTY(6008, "上传文件为空，请选择文件后上传！"),
 
 
     ;
