@@ -2,10 +2,9 @@ package oneblog.web.controller;
 
 import oneblog.model.User;
 import oneblog.service.UserService;
-import oneblog.utils.ApiResult;
-import oneblog.utils.FileUtil;
-import oneblog.web.param.api.LoginParam;
-import oneblog.web.param.api.RegisterParam;
+import oneblog.utils.AuthResult;
+import oneblog.web.param.LoginParam;
+import oneblog.web.param.RegisterParam;
 import oneblog.web.response.ResponseVO;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -15,11 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.HtmlUtils;
 
 import javax.servlet.http.HttpSession;
@@ -29,11 +24,11 @@ import javax.validation.Valid;
  * @Author dingshuangen
  * @Date 2020/9/25 15:33
  */
-@RequestMapping("/api")
+@RequestMapping("/auth")
 @Controller
-public class ApiController {
+public class AuthController {
 
-    private static final Logger logger = LoggerFactory.getLogger(ApiController.class);
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @Autowired
     private UserService userService;
@@ -57,11 +52,10 @@ public class ApiController {
 
         } catch (AuthenticationException e) {
             logger.error("[login-failed]:recordTime={}, traceId={}, userName={}, pwd={}", param.getTime(), param.getTraceId(), param.getUserName(), param.getPassword());
-            return ApiResult.loginFailed();
+            return AuthResult.loginFailed();
         }
-        return ApiResult.loginSuccess();
+        return AuthResult.loginSuccess();
     }
-
     @ResponseBody
     @PostMapping("/register")
     public ResponseVO<User> register(@RequestBody @Valid RegisterParam param) {
@@ -70,13 +64,13 @@ public class ApiController {
 
         //验证是否存在
         if (userService.existUser(param.getUserName())) {
-            return ApiResult.userExist();
+            return AuthResult.userExist();
         }
         int insert = userService.registerUser(param);
         if (insert > 0) {
-            return ApiResult.registerSuccess();
+            return AuthResult.registerSuccess();
         }
-        return ApiResult.registerFailed();
+        return AuthResult.registerFailed();
     }
 
     @RequestMapping(value = "/logout", name = "退出系统")
@@ -86,15 +80,5 @@ public class ApiController {
             subject.logout();
         }
         return "redirect:/c/index";
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/upload-file", name = "上传文件接口")
-    public ResponseVO<String> uploadFile(MultipartFile file, HttpSession session) {
-        if (file == null || file.isEmpty()){
-            return ApiResult.uploadEmpty();
-        }
-        String s = FileUtil.writeFile(file);
-        return ApiResult.uploadSuccess(s);
     }
 }

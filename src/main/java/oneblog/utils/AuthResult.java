@@ -7,7 +7,7 @@ import oneblog.web.response.ResponseVO;
  * @Author dingshuangen
  * @Date 2020/9/27 17:59
  */
-public class ApiResult {
+public class AuthResult {
 
     public static ResponseVO loginSuccess() {
         return new ResponseVO(ApiEnum.LOGIN_SUCCESS);

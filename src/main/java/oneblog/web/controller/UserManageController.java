@@ -2,13 +2,11 @@ package oneblog.web.controller;
 
 import com.alibaba.fastjson.JSON;
 import oneblog.constant.ResponseEnum;
-import oneblog.model.Role;
 import oneblog.model.User;
-import oneblog.service.RoleService;
 import oneblog.service.UserService;
 import oneblog.utils.ResponseUtil;
 import oneblog.utils.TraceUtil;
-import oneblog.web.param.adm.UserParam;
+import oneblog.web.param.UserParam;
 import oneblog.web.response.ResponseVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,18 +22,15 @@ import java.util.List;
  * @Date 2020/9/28 14:22
  */
 @RestController
-@RequestMapping("/adm")
-public class AdminRestController {
+@RequestMapping("/um")
+public class UserManageController {
 
-    private static final Logger logger = LoggerFactory.getLogger(AdminRestController.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserManageController.class);
 
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private RoleService roleService;
-
-    @GetMapping(value = "/user/list", name = "查看全部用户列表")
+    @GetMapping(value = "/list", name = "查看全部用户列表")
     public ResponseVO<List<User>> userList(HttpSession session){
         logger.info("[userList]:traceId={}, seesionId={}, userId=", TraceUtil.getTraceId(), session.getId(),session.getAttribute("userId"));
         List<User> allUser = userService.getAllUser();
@@ -43,15 +38,7 @@ public class AdminRestController {
         return ResponseUtil.success(allUser);
     }
 
-    @GetMapping(value = "/user/roles", name = "查看全部用户角色")
-    public ResponseVO<List<Role>> userRoles(HttpSession session){
-        logger.info("[userRoles]:traceId={}, seesionId={}, userId=", TraceUtil.getTraceId(), session.getId(),session.getAttribute("user"));
-        List<Role> userRoles = roleService.roleList();
-        logger.info("[userRoles]:list={}", JSON.toJSONString(userRoles));
-        return ResponseUtil.success(userRoles);
-    }
-
-    @PostMapping(value = "/user/authorize", name = "用户权限变更")
+    @PostMapping(value = "/authorize", name = "用户权限变更")
     public ResponseVO<Integer> authorize(@RequestBody @Valid UserParam userParam){
 
         logger.error("userParam={}",userParam);

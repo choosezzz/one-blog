@@ -25,7 +25,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public int updateRole(Role role) {
-        return roleMapper.updateByPrimaryKey(role);
+        return roleMapper.updateByPrimaryKeySelective(role);
     }
 
     @Override
@@ -34,7 +34,12 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    public Role getRoleByName(String name) {
+        return roleMapper.selectByName(name);
+    }
+
+    @Override
     public int addRole(Role role) {
-        return roleMapper.insert(role);
+        return roleMapper.insertSelective(role);
     }
 }

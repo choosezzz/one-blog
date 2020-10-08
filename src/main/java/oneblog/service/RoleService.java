@@ -17,4 +17,6 @@ public interface RoleService {
     int deleteRole(Integer roleId);
 
     int addRole(Role role);
+
+    Role getRoleByName(String name);
 }

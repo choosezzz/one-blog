@@ -1,8 +1,7 @@
 package oneblog.service;
 
 import oneblog.model.User;
-import oneblog.web.param.api.RegisterParam;
-import oneblog.web.response.ResponseVO;
+import oneblog.web.param.RegisterParam;
 
 import java.util.List;
 

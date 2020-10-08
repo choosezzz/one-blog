@@ -1,6 +1,6 @@
 $(function(){
     const data4Vue = {
-        uri:'/adm/user/',
+        uri:'/um',
         beans: [],
         roles:[],
         user: {userId:0,userName:"",status:0,roleId:0},
@@ -16,7 +16,7 @@ $(function(){
         },
         methods: {
             roleList:function(){
-                const url =  this.uri + "/roles";
+                const url = "/role/list";
                 axios.get(url).then(function(response) {
                     vue.roles = response.data.data;
                 });

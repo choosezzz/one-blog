@@ -1,6 +1,6 @@
 $(function(){
     const data4Vue = {
-        uri:'/api/login',
+        uri:'/auth/login',
         message: '',
         show: false,
         user:{userName:'',password:'',rememberMe:false}

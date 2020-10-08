@@ -17,7 +17,7 @@
                 </ul>
             </li>
             <li class="superAdminClick friendLink"><a href="/m/link"><span class="am-icon-link"></span> 友链管理</a></li>
-            <li class="superAdminClick userFeedback"><a href="/m/user"><span class="am-icon-users"></span> 用户管理</a></li>
+            <li class="superAdminClick userFeedback" th:if="${session.roleId eq 1}"><a href="/m/user"><span class="am-icon-users"></span> 用户管理</a></li>
             <li class="superAdminClick privateWord" style="width: 100%"><a href="/m/message"><span class="am-icon-pencil-square-o"></span> 留言</a></li>
         </ul>
 

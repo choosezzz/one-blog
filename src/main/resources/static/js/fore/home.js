@@ -1,6 +1,6 @@
 $(function(){
     const data4Vue = {
-        uri: '/c/user',
+        uri: '/user',
         message: '',
         show: false,
         user: {},

@@ -1,4 +1,4 @@
-package oneblog.web.param.api;
+package oneblog.web.param;
 
 import lombok.Getter;
 import lombok.Setter;

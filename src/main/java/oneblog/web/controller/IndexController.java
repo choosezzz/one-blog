@@ -30,4 +30,8 @@ public class IndexController {
     public String index5() {
         return "redirect:/m/admin";
     }
+    @GetMapping(value = "/c/index", name = "默认页")
+    public String index() {
+        return "/fore/index";
+    }
 }

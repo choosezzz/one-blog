@@ -9,7 +9,8 @@ public enum ResponseEnum {
     ERROR(4001, "ERROR"),
     PARAM_INVALID(4002, "参数检验失败。"),
     OPERATION_FAILED(4003, "操作失败，请稍后重试。"),
-
+    ROLE_EXIST(4004, "角色名称已存在。"),
+    ROLE_FAILED(4005, "角色操作失败。"),
 
 
     ;

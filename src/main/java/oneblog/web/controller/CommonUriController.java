@@ -14,10 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class CommonUriController {
 
-    @GetMapping(value = "/index", name = "默认页")
-    public String index() {
-        return "/fore/index";
-    }
     @GetMapping(value = "/article", name = "文章浏览")
     public String viewArticle() {
         return "/fore/show";

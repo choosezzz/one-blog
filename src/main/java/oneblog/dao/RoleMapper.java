@@ -14,6 +14,7 @@ public interface RoleMapper {
     int insertSelective(Role record);
 
     Role selectByPrimaryKey(Integer roleId);
+    Role selectByName(String name);
 
     int updateByPrimaryKeySelective(Role record);
 
