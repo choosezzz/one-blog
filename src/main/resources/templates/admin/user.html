@@ -50,9 +50,9 @@
                                                     </td>
                                                     <td>
                                                         <div>
-                                                            <a href="#nowhere" @click="update(user.userName,1)"><button class="articleDeleteBtn articleDelete am-btn am-btn-warning">正常</button></a>
-                                                            <a href="#nowhere" @click="update(user.userName,2)"><button class="articleDeleteBtn articleDelete am-btn am-btn-danger">屏蔽</button></a>
-                                                            <a href="#nowhere" @click="update(user.userName,3)"><button class="articleDeleteBtn articleDelete am-btn am-btn-danger">注销</button></a>
+                                                            <a href="#nowhere" v-if="user.status != 1" @click="update(user.userId,1)"><button class="articleDeleteBtn articleDelete am-btn am-btn-warning">正常</button></a>
+                                                            <a href="#nowhere" v-if="user.status != 2" @click="update(user.userId,2)"><button class="articleDeleteBtn articleDelete am-btn am-btn-danger">屏蔽</button></a>
+                                                            <a href="#nowhere" v-if="user.status != 3" @click="update(user.userId,3)"><button class="articleDeleteBtn articleDelete am-btn am-btn-danger">注销</button></a>
                                                         </div>
                                                     </td>
                                                 </tr>

@@ -3,10 +3,11 @@ package oneblog.web.param;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import oneblog.web.param.ReqParam;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 /**
@@ -27,5 +28,7 @@ public class UserParam extends ReqParam {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthday;
     private String introduction;
+    @Size(max = 3, min = 1,message = "用户状态参数错误！")
+    private Byte status;
     private Integer roleId;
 }

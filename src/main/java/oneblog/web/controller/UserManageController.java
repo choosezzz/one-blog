@@ -31,29 +31,43 @@ public class UserManageController {
     private UserService userService;
 
     @GetMapping(value = "/list", name = "查看全部用户列表")
-    public ResponseVO<List<User>> userList(HttpSession session){
-        logger.info("[userList]:traceId={}, seesionId={}, userId=", TraceUtil.getTraceId(), session.getId(),session.getAttribute("userId"));
+    public ResponseVO<List<User>> userList(HttpSession session) {
+        logger.info("[userList]:traceId={}, seesionId={}, userId=", TraceUtil.getTraceId(), session.getId(), session.getAttribute("userId"));
         List<User> allUser = userService.getAllUser();
         logger.info("[userList]:list={}", JSON.toJSONString(allUser));
         return ResponseUtil.success(allUser);
     }
 
     @PostMapping(value = "/authorize", name = "用户权限变更")
-    public ResponseVO<Integer> authorize(@RequestBody @Valid UserParam userParam){
+    public ResponseVO authorize(@RequestBody @Valid UserParam userParam) {
 
-        logger.error("userParam={}",userParam);
-        if (userParam.getRoleId() == null || userParam.getRoleId() <= 0){
+        logger.error("[authorize]: userParam={}", userParam);
+        if (userParam.getRoleId() == null || userParam.getRoleId() <= 0) {
             return ResponseUtil.forNull(ResponseEnum.PARAM_INVALID);
         }
         User user = new User();
         user.setRoleId(userParam.getRoleId());
         user.setUserId(userParam.getUserId());
         int i = userService.updateByUserId(user);
-        if (i > 0){
-            return ResponseUtil.success(userParam.getRoleId());
+        if (i > 0) {
+            return ResponseUtil.success();
         }
         return ResponseUtil.forNull(ResponseEnum.OPERATION_FAILED);
     }
 
-
+    @PostMapping(name = "用户状态修改", value = "/status")
+    public ResponseVO updateUserStatus(@RequestBody @Valid UserParam userParam) {
+        logger.info("[updateUserStatus]: param = {}", userParam);
+        if (userParam.getStatus() == null){
+            return ResponseUtil.forNull(ResponseEnum.PARAM_INVALID);
+        }
+        User user = new User();
+        user.setUserId(userParam.getUserId());
+        user.setStatus(userParam.getStatus());
+        int i = userService.updateByUserId(user);
+        if (i > 0){
+            return ResponseUtil.success();
+        }
+        return ResponseUtil.forNull(ResponseEnum.OPERATION_FAILED);
+    }
 }

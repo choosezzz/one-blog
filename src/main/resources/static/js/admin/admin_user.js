@@ -33,10 +33,10 @@ $(function(){
                 this.user.userId = userId;
                 this.user.status = status;
                 axios.post(url,vue.user).then(function(response){
-                    if (response.data.id > 0) {
-                        vue.list(vue.pagination.current-1);
+                    if (response.data.code === 2001) {
+                        vue.userList();
                     } else {
-                        alert("操作失败！");
+                        alert(response.data.msg);
                     }
                 }).catch(function (error) {
                     alert(error);
@@ -48,7 +48,7 @@ $(function(){
                 //change事件，取选中的value
                 this.user.roleId = event.target.value;
                 axios.post(url,vue.user).then(function(response){
-                    if (response.data.data > 0) {
+                    if (response.data.code === 2001) {
                         alert("修改权限成功！");
                     } else {
                         alert("操作失败！");
