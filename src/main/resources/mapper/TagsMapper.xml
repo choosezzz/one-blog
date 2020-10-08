@@ -10,11 +10,25 @@
   <sql id="Base_Column_List" >
     tag_id, tag_name, created_time, status
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer"  >
     select 
     <include refid="Base_Column_List" />
     from tags
     where tag_id = #{tagId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByTagName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from tags
+    where tag_name = #{tagName,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="java.lang.Byte">
+    select
+    <include refid="Base_Column_List" />
+    from tags
+    <if test="status != null">
+      where state = #{status,jdbcType=TINYINT}
+    </if>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from tags
@@ -26,7 +40,7 @@
     values (#{tagId,jdbcType=INTEGER}, #{tagName,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, 
       #{status,jdbcType=TINYINT})
   </insert>
-  <insert id="insertSelective" parameterType="oneblog.model.Tags" >
+  <insert id="insertSelective" parameterType="oneblog.model.Tags" useGeneratedKeys="true" keyProperty="tagId">
     insert into tags
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="tagId != null" >

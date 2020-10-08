@@ -1,5 +1,7 @@
 package oneblog.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import oneblog.model.Tags;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -14,8 +16,9 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class RedisService {
 
-    private static final String USER_NAME_ID = "un_id_";
-    private static final String ROLE_ID = "role_id_";
+    private static final String USER_NAME_ID_MAPPING = "m_name_id_";
+    private static final String ROLE_ID = "role_";
+    private static final String TAG_ID = "tag_";
 
     private static final long ONE_DAY = 24 * 60 * 60;
 
@@ -38,7 +41,7 @@ public class RedisService {
         if (StringUtils.isEmpty(name)) {
             return null;
         }
-        String value = getValue(USER_NAME_ID + name);
+        String value = getValue(USER_NAME_ID_MAPPING + name);
         if (StringUtils.isNotEmpty(value)) {
             return Integer.parseInt(value);
         }
@@ -49,7 +52,7 @@ public class RedisService {
         if (StringUtils.isEmpty(name)) {
             return;
         }
-        setKV(USER_NAME_ID + name, String.valueOf(id));
+        setKV(USER_NAME_ID_MAPPING + name, String.valueOf(id));
     }
 
     public String getRoleIdByName(String roleName) {
@@ -76,5 +79,21 @@ public class RedisService {
 
     private String getValue(String key) {
         return stringRedisTemplate.opsForValue().get(key);
+    }
+
+    public Tags getTag(String tagName) {
+        String value = getValue(TAG_ID + tagName);
+        if (StringUtils.isNotEmpty(value)){
+            return JSON.parseObject(value, Tags.class);
+        }
+        return null;
+    }
+
+    public void setTag(Tags tags) {
+        setKV(TAG_ID + tags.getTagName(), JSON.toJSONString(tags));
+    }
+
+    public void deleteTag(String tagName) {
+        stringRedisTemplate.delete(TAG_ID + tagName);
     }
 }

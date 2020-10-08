@@ -32,6 +32,9 @@ public class ApiConstant {
     public static final String JSESSIONID = "JSESSIONID";
     public static final String SESSION_USER = "user";
 
+    public static final byte TAG_NORMAL = 1;
+    public static final byte TAG_DELETE = 0;
+
 
 
 }

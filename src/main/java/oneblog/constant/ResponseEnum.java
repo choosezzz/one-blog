@@ -11,6 +11,8 @@ public enum ResponseEnum {
     OPERATION_FAILED(4003, "操作失败，请稍后重试。"),
     ROLE_EXIST(4004, "角色名称已存在。"),
     ROLE_FAILED(4005, "角色操作失败。"),
+    TAG_EXIST(4006, "标签已存在。"),
+    TAG_FAILED(4007, "标签操作失败。"),
 
 
     ;

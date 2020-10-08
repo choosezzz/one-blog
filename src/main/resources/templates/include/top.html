@@ -27,8 +27,9 @@
                                 <span th:text="${session.user.userName}"></span> <span class="am-icon-caret-down"></span>
                             </button>
                             <ul class="am-dropdown-content">
-                                <li><a href="">动态</a></li>
-                                <li><a href="">消息</a></li>
+                                <li><a href="/c/home">个人主页</a></li>
+                                <li><a href="/c/activity">动态</a></li>
+                                <li><a href="/c/message">消息</a></li>
                                 <li th:if="${1==session.roleId}"><a href="/m/admin">超级管理员</a></li>
                                 <li th:if="${2==session.roleId}"><a href="/m/admin">管理员</a></li>
                                 <li class="am-divider"></li>

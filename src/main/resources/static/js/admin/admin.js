@@ -13,7 +13,7 @@ $(function(){
     var vue = new Vue({
         el: '#app',
         data: data4VueAll,
-        mounted:function(){ //mounted　表示这个 Vue 对象加载成功了
+        mounted:function(){
             this.list();
         },
         methods: {
