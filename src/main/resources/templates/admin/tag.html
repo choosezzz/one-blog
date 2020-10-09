@@ -32,7 +32,7 @@
 
                                     <div class="categories">
                                         <span v-for="tag in beans">
-                                            <a :href="'/article_of_tag?tid='+tag.id"><span class="category">{{tag.name}} {{tag.articleCount}}</span></a><a class="am-icon-remove category-remove" @click="deleteBean(tag.id)"></a>
+                                            <a :href="'/article_of_tag?tid='+tag.id"><span class="category">{{tag.tagName}}</span></a><a class="am-icon-remove category-remove" @click="deleteBean(tag.tagId,tag.tagName)"></a>
                                         </span>
                                     </div>
                                     <div th:replace="include/page::html" ></div>

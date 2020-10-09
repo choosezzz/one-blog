@@ -1,6 +1,6 @@
 $(function(){
     const data4Vue = {
-        uri:'tags',
+        uri:'/tag',
         countAll: 0,
         beans: [],
         tag: {id:0,categoryName:''},
@@ -16,16 +16,16 @@ $(function(){
         },
         methods: {
             count:function(){
-                const url = this.uri + "/count_all";
+                const url = this.uri + "/count";
                 axios.get(url).then(function(response) {
-                    vue.countAll = response.data.data.countAll;
+                    vue.countAll = response.data.data;
                 });
             },
             list:function(start){
-                const url = this.uri+"_of_page?start="+start+"&size=50";
+                const url = this.uri+"/list";
                 axios.get(url).then(function(response) {
-                    vue.pagination = response.data;
-                    vue.beans = response.data.content;
+                    // vue.pagination = response.data;
+                    vue.beans = response.data.data;
                 });
             },
             jump: function(page){

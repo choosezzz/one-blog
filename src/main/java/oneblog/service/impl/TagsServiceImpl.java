@@ -31,7 +31,7 @@ public class TagsServiceImpl implements TagsService {
 
         int i = tagsMapper.insertSelective(tags);
         if (i > 0) {
-            redisService.setTag(tags);
+            redisService.setTagId(tags);
             return true;
         }
         return false;
@@ -43,7 +43,19 @@ public class TagsServiceImpl implements TagsService {
 
         int i = tagsMapper.updateByPrimaryKeySelective(tags);
         if (i > 0) {
-            redisService.setTag(tags);
+            redisService.setTagId(tags);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean realDeleteTag(Tags tags) {
+
+        int i = tagsMapper.deleteByPrimaryKey(tags.getTagId());
+        if (i > 0) {
+            redisService.deleteTagId(tags.getTagName());
             return true;
         }
         return false;
@@ -52,10 +64,9 @@ public class TagsServiceImpl implements TagsService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean deleteTag(Tags tags) {
-
-        int i = tagsMapper.deleteByPrimaryKey(tags.getTagId());
+        int i = tagsMapper.updateByPrimaryKeySelective(tags);
         if (i > 0) {
-            redisService.deleteTag(tags.getTagName());
+            redisService.deleteTagId(tags.getTagName());
             return true;
         }
         return false;
@@ -63,7 +74,9 @@ public class TagsServiceImpl implements TagsService {
 
     @Override
     public List<Tags> getNormalTags() {
-        return tagsMapper.selectAll(ApiConstant.TAG_NORMAL);
+        List<Tags> tags = tagsMapper.selectAll(ApiConstant.TAG_NORMAL);
+        redisService.batchSetTags(tags);
+        return tags;
     }
 
     @Override
@@ -75,17 +88,22 @@ public class TagsServiceImpl implements TagsService {
     public Boolean tagExist(String tagName) {
 
         //先查询缓存
-        Tags tag = redisService.getTag(tagName);
-        if (tag != null) {
+        Integer tagId = redisService.getTagId(tagName);
+        if (tagId != null && tagId > 0) {
             return true;
         }
         //查询数据库
-        tag = tagsMapper.selectByTagName(tagName);
-        if (tag != null) {
+        Tags tags = tagsMapper.selectByTagName(tagName);
+        if (tags != null) {
             //写入缓存
-            redisService.setTag(tag);
+            redisService.setTagId(tags);
             return true;
         }
         return false;
+    }
+
+    @Override
+    public Integer getNormalTagsCount() {
+        return tagsMapper.count();
     }
 }

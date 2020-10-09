@@ -1,21 +1,20 @@
 package oneblog.web.controller;
 
-import jdk.nashorn.internal.objects.annotations.Getter;
 import oneblog.constant.ApiConstant;
 import oneblog.constant.ResponseEnum;
 import oneblog.model.Tags;
 import oneblog.service.TagsService;
+import oneblog.service.impl.RedisService;
 import oneblog.utils.ResponseUtil;
-import oneblog.web.param.TagParam;
+import oneblog.web.param.AddTagParam;
+import oneblog.web.param.DeleteTagParam;
 import oneblog.web.response.ResponseVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -31,6 +30,9 @@ public class TagController {
     @Autowired
     private TagsService tagsService;
 
+    @Autowired
+    private RedisService redisService;
+
     @GetMapping(name = "查看正常标签列表", value = "/list")
     public ResponseVO<List<Tags>> tagList(){
         List<Tags> normalTags = tagsService.getNormalTags();
@@ -38,7 +40,7 @@ public class TagController {
     }
 
     @PostMapping(name = "添加标签", value = "/add")
-    public ResponseVO<Tags> addTag(TagParam param){
+    public ResponseVO<Tags> addTag(@RequestBody @Valid AddTagParam param){
         logger.info("[add tag]: param = {}", param);
         Boolean exist = tagsService.tagExist(param.getTagName());
         if (exist){
@@ -52,6 +54,46 @@ public class TagController {
         boolean success = tagsService.addTag(tags);
         if (success){
             return ResponseUtil.success(tags);
+        }
+        return ResponseUtil.forNull(ResponseEnum.TAG_FAILED);
+    }
+
+    @GetMapping(value = "/count",name = "统计标签数量")
+    public ResponseVO<Integer> tagsCount(){
+        Integer count = tagsService.getNormalTagsCount();
+        return ResponseUtil.success(count);
+    }
+
+    @PostMapping(value = "/delete", name = "逻辑删除")
+    public ResponseVO deleteTags(@RequestBody @Valid DeleteTagParam param){
+        logger.info("[delete tag]: param = {}", param);
+
+        Integer tagId = redisService.getTagId(param.getTagName());
+        if (tagId != null && !tagId.equals(param.getTagId())){
+            return ResponseUtil.forNull(ResponseEnum.TAG_NOT_MATCH);
+        }
+        Tags tags = new Tags();
+        tags.setTagId(param.getTagId());
+        tags.setTagName(param.getTagName());
+        tags.setStatus(ApiConstant.TAG_DELETE);
+        boolean success = tagsService.deleteTag(tags);
+        if (success){
+            return ResponseUtil.success();
+        }
+        return ResponseUtil.forNull(ResponseEnum.TAG_FAILED);
+    }
+    @PostMapping(value = "/real_del", name = "真实删除")
+    public ResponseVO realDeleteTags(@RequestBody @Valid DeleteTagParam param){
+        logger.info("[real delete tag]: param = {}", param);
+        Integer tagId = redisService.getTagId(param.getTagName());
+        if (tagId != null && !tagId.equals(param.getTagId())){
+            return ResponseUtil.forNull(ResponseEnum.TAG_NOT_MATCH);
+        }
+        Tags tags = new Tags();
+        tags.setTagId(param.getTagId());
+        boolean success = tagsService.realDeleteTag(tags);
+        if (success){
+            return ResponseUtil.success();
         }
         return ResponseUtil.forNull(ResponseEnum.TAG_FAILED);
     }

@@ -29,12 +29,13 @@ public interface TagsService {
      * @param tags
      * @return
      */
+    boolean realDeleteTag(Tags tags);
     boolean deleteTag(Tags tags);
-
     List<Tags> getNormalTags();
 
     Tags getTagById(Integer tagId);
 
     Boolean tagExist(String tagName);
 
+    Integer getNormalTagsCount();
 }

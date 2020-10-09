@@ -7,7 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @Author dingshuangen
@@ -81,19 +86,25 @@ public class RedisService {
         return stringRedisTemplate.opsForValue().get(key);
     }
 
-    public Tags getTag(String tagName) {
+    public Integer getTagId(String tagName) {
         String value = getValue(TAG_ID + tagName);
         if (StringUtils.isNotEmpty(value)){
-            return JSON.parseObject(value, Tags.class);
+            return Integer.parseInt(value);
         }
         return null;
     }
 
-    public void setTag(Tags tags) {
-        setKV(TAG_ID + tags.getTagName(), JSON.toJSONString(tags));
+    public void setTagId(Tags tags) {
+        setKV(TAG_ID + tags.getTagName(), String.valueOf(tags.getTagId()));
     }
 
-    public void deleteTag(String tagName) {
+    public void deleteTagId(String tagName) {
         stringRedisTemplate.delete(TAG_ID + tagName);
+    }
+
+    public void batchSetTags(List<Tags> tags) {
+        Map<String,String> map = tags.stream()
+                .collect(Collectors.toMap(entry-> (TAG_ID + entry.getTagName()), entry->String.valueOf(entry.getTagId())));
+        stringRedisTemplate.opsForValue().multiSetIfAbsent(map);
     }
 }

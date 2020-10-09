@@ -5,18 +5,17 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 
 /**
  * @Author dingshuangen
- * @Date 2020/10/9 1:10
+ * @Date 2020/10/9 16:05
  */
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class TagParam extends ReqParam{
-
-    @NotNull(message = "标签名称不可为空")
+public class DeleteTagParam extends ReqParam{
+    @NotNull(message = "标签id不可为空！")
+    private Integer tagId;
+    @NotNull(message = "标签名称不可为空！")
     private String tagName;
-    private Date createdTime = new Date();
 }

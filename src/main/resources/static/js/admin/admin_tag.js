@@ -1,11 +1,11 @@
 $(function(){
     const data4Vue = {
-        uri:'tags',
+        uri:'/tag',
         countAll: 0,
         beans: [],
         message: '',
         show: false,
-        tag: {id:0,categoryName:''},
+        tag: {},
         pagination:{}
     };
     //ViewModel
@@ -18,44 +18,53 @@ $(function(){
         },
         methods: {
             count:function(){
-                const url = this.uri + "/count_all";
+                const url = this.uri + "/count";
                 axios.get(url).then(function(response) {
-                    vue.countAll = response.data.data.countAll;
+                    vue.countAll = response.data.data;
                 });
             },
             list:function(start){
-                const url =  this.uri+"_of_page?start="+start;
+                const url =  this.uri+"/list";
                 axios.get(url).then(function(response) {
-                    vue.pagination = response.data;
-                    vue.beans = response.data.content;
+                    // vue.pagination = response.data;
+                    vue.beans = response.data.data;
                 });
             },
             addBean: function(name) {
-                const url = this.uri+"?name="+name;
-                axios.post(url,this.category).then(function(response){
-                    if (response.data.id > 0) {
-                        location.href = "/admin_tag";
-                    } else if (response.data.id == -1) {
-                        vue.message = "\"博客标签\"已存在!";
-                        vue.show = true;
+                const url = this.uri+"/add";
+                this.tag.tagName=name;
+                axios.post(url,this.tag).then(function(response){
+                    if (response.data.code === 2001) {
+                        vue.beans.push(response.data.data);
                     } else {
-                        vue.message = "\"博客标签\"添加失败!";
+                        vue.message = response.data.msg;
                         vue.show = true;
+                        setTimeout(function () {
+                            vue.show = false;
+                        }, 3000)
                     }
                 }).catch(function (error) {
                     vue.message = error;
                     vue.show = true;
+                    setTimeout(function () {
+                        vue.show = false;
+                    }, 3000)
                 });
             },
-            deleteBean: function (id) {
-                const url = this.uri+"/"+id;
-                axios.delete(url).then(function(response){
-                    if(1 === response.data.code) {
+            deleteBean: function (id,name) {
+                const url = this.uri+"/delete";
+                this.tag.tagName = name;
+                this.tag.tagId = id;
+                axios.post(url, this.tag).then(function(response){
+                    if(2001 === response.data.code) {
                         vue.list(0);
                         vue.count();
                     } else {
-                        vue.message = "删除失败!";
+                        vue.message = response.data.msg;
                         vue.show = true;
+                        setTimeout(function () {
+                            vue.show = false;
+                        }, 3000)
                     }
                 });
             },

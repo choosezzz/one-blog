@@ -2,9 +2,9 @@
 <html xmlns:http="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml" class="js cssanimations"
       lang="en">
 <head th:include="include/fore/header::html"></head>
-<link href="css/fore/categories.css" rel="stylesheet">
-<link href="css/fore/tags.css" rel="stylesheet">
-<link href="css/fore/archives.css" rel="stylesheet">
+<link href="../css/fore/categories.css" rel="stylesheet">
+<link href="../css/fore/tags.css" rel="stylesheet">
+<link href="../css/fore/archives.css" rel="stylesheet">
 <body>
 <div th:replace="include/fore/top::html"></div>
 <div id="app">
@@ -16,15 +16,15 @@
                      data-am-scrollspy="{animation: 'scale-up', repeat: false}">
                     <div>
                         <div class="categories-title">
-                            <h3 style="font-size: 16px"># 共 {{countAll}} 个标签</h3>
+                            <h3 style="font-size: 16px"># 共 {{countAll}} 个标签 (有待改进)</h3>
                         </div>
                         <div v-if="beans.length>0">
                             <ul class="tags">
                                 <li v-for="tag in beans">
                                     <div>
                                         <a class="tag" :href="'/article_of_tag?tid='+tag.id">
-                                            <span style="display: inline-block; background-color: #fff; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgba(101,81,65,0.66);"></span>
-                                            {{tag.name}} ({{tag.articleCount}})
+                                            <span style="display: inline-block; background-color: #fac504; width: 10px; height: 10px; border-radius: 5px; border: 1px solid rgb(2,72,250);"></span>
+                                            TAG_ID: {{tag.tagId}} - TAG_NAME: {{tag.tagName}}
                                         </a>
                                     </div>
                                 </li>

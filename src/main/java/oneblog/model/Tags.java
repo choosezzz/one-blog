@@ -1,5 +1,7 @@
 package oneblog.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class Tags {
@@ -7,6 +9,7 @@ public class Tags {
 
     private String tagName;
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date createdTime;
 
     private Byte status;

@@ -63,7 +63,7 @@
                         <div class="am-form-group pub-blog-form" style="margin-top: 25px;">
                             <label>博客标签</label>
                             <select multiple v-model.trim="article.tagsId">
-                                <option :value="t.id" v-for="t in tags">{{t.name}}</option>
+                                <option :value="t.tagId" v-for="t in tags">{{t.tagName}}</option>
                             </select>
                         </div>
 
@@ -123,9 +123,9 @@
             },
             methods: {
                 loadTag: function() {
-                    const url = "/admin_tag/tags";
+                    const url = "/tag/list";
                     axios.get(url).then(function(response){
-                        vue.tags = response.data;
+                        vue.tags = response.data.data;
                     });
                 },
                 loadCategory: function() {

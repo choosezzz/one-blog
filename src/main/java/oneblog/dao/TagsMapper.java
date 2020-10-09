@@ -20,4 +20,6 @@ public interface TagsMapper {
     int updateByPrimaryKeySelective(Tags record);
 
     int updateByPrimaryKey(Tags record);
+
+    Integer count();
 }
