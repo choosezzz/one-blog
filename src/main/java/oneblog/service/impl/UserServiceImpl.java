@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
         user.setSalt(salt);
         user.setPassword(encodedPassword);
         user.setRegisterTime(new Date());
-        user.setStatus(ApiConstant.STATUS_NORMAL);
+        user.setStatus(ApiConstant.USER_NORMAL);
         user.setType(ApiConstant.TYPE_REGISTER);
         user.setPhone(param.getPhone());
         user.setEmail(param.getEmail());

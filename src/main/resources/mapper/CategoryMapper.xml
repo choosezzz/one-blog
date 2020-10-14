@@ -16,17 +16,17 @@
     from category
     where cate_id = #{cateId,jdbcType=INTEGER}
   </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from category
+    where status = 1
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from category
     where cate_id = #{cateId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="oneblog.model.Category" >
-    insert into category (cate_id, cate_name, created_time, 
-      status)
-    values (#{cateId,jdbcType=INTEGER}, #{cateName,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, 
-      #{status,jdbcType=TINYINT})
-  </insert>
-  <insert id="insertSelective" parameterType="oneblog.model.Category" >
+  <insert id="insertSelective" parameterType="oneblog.model.Category" useGeneratedKeys="true" keyProperty="cateId">
     insert into category
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="cateId != null" >
@@ -70,13 +70,6 @@
         status = #{status,jdbcType=TINYINT},
       </if>
     </set>
-    where cate_id = #{cateId,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="oneblog.model.Category" >
-    update category
-    set cate_name = #{cateName,jdbcType=VARCHAR},
-      created_time = #{createdTime,jdbcType=TIMESTAMP},
-      status = #{status,jdbcType=TINYINT}
     where cate_id = #{cateId,jdbcType=INTEGER}
   </update>
 </mapper>

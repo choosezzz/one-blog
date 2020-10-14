@@ -35,7 +35,8 @@ $(function(){
                 this.tag.tagName=name;
                 axios.post(url,this.tag).then(function(response){
                     if (response.data.code === 2001) {
-                        vue.beans.push(response.data.data);
+                        vue.list(0);
+                        vue.count();
                     } else {
                         vue.message = response.data.msg;
                         vue.show = true;

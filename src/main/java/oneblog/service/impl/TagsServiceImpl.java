@@ -74,7 +74,7 @@ public class TagsServiceImpl implements TagsService {
 
     @Override
     public List<Tags> getNormalTags() {
-        List<Tags> tags = tagsMapper.selectAll(ApiConstant.TAG_NORMAL);
+        List<Tags> tags = tagsMapper.selectAll(ApiConstant.STATUS_NORMAL);
         redisService.batchSetTags(tags);
         return tags;
     }

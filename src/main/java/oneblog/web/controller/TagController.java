@@ -34,65 +34,67 @@ public class TagController {
     private RedisService redisService;
 
     @GetMapping(name = "查看正常标签列表", value = "/list")
-    public ResponseVO<List<Tags>> tagList(){
+    public ResponseVO<List<Tags>> tagList() {
         List<Tags> normalTags = tagsService.getNormalTags();
         return ResponseUtil.success(normalTags);
     }
 
     @PostMapping(name = "添加标签", value = "/add")
-    public ResponseVO<Tags> addTag(@RequestBody @Valid AddTagParam param){
+    public ResponseVO<Tags> addTag(@RequestBody @Valid AddTagParam param) {
         logger.info("[add tag]: param = {}", param);
         Boolean exist = tagsService.tagExist(param.getTagName());
-        if (exist){
+        if (exist) {
             return ResponseUtil.forNull(ResponseEnum.TAG_EXIST);
         }
 
         Tags tags = new Tags();
         tags.setTagName(param.getTagName());
         tags.setCreatedTime(param.getCreatedTime());
-        tags.setStatus(ApiConstant.TAG_NORMAL);
+        tags.setStatus(ApiConstant.STATUS_NORMAL);
         boolean success = tagsService.addTag(tags);
-        if (success){
+        if (success) {
             return ResponseUtil.success(tags);
         }
         return ResponseUtil.forNull(ResponseEnum.TAG_FAILED);
     }
 
-    @GetMapping(value = "/count",name = "统计标签数量")
-    public ResponseVO<Integer> tagsCount(){
+    @GetMapping(value = "/count", name = "统计标签数量")
+    public ResponseVO<Integer> tagsCount() {
         Integer count = tagsService.getNormalTagsCount();
         return ResponseUtil.success(count);
     }
 
-    @PostMapping(value = "/delete", name = "逻辑删除")
-    public ResponseVO deleteTags(@RequestBody @Valid DeleteTagParam param){
+    //@PostMapping(value = "/delete", name = "逻辑删除")
+    public ResponseVO deleteTags(@RequestBody @Valid DeleteTagParam param) {
         logger.info("[delete tag]: param = {}", param);
 
         Integer tagId = redisService.getTagId(param.getTagName());
-        if (tagId != null && !tagId.equals(param.getTagId())){
+        if (tagId != null && !tagId.equals(param.getTagId())) {
             return ResponseUtil.forNull(ResponseEnum.TAG_NOT_MATCH);
         }
         Tags tags = new Tags();
         tags.setTagId(param.getTagId());
         tags.setTagName(param.getTagName());
-        tags.setStatus(ApiConstant.TAG_DELETE);
+        tags.setStatus(ApiConstant.STATUS_DELETE);
         boolean success = tagsService.deleteTag(tags);
-        if (success){
+        if (success) {
             return ResponseUtil.success();
         }
         return ResponseUtil.forNull(ResponseEnum.TAG_FAILED);
     }
-    @PostMapping(value = "/real_del", name = "真实删除")
-    public ResponseVO realDeleteTags(@RequestBody @Valid DeleteTagParam param){
+
+    @PostMapping(value = "/delete", name = "真实删除")
+    public ResponseVO realDeleteTags(@RequestBody @Valid DeleteTagParam param) {
         logger.info("[real delete tag]: param = {}", param);
         Integer tagId = redisService.getTagId(param.getTagName());
-        if (tagId != null && !tagId.equals(param.getTagId())){
+        if (tagId != null && !tagId.equals(param.getTagId())) {
             return ResponseUtil.forNull(ResponseEnum.TAG_NOT_MATCH);
         }
         Tags tags = new Tags();
-        tags.setTagId(param.getTagId());
+        tags.setTagId(tagId);
+        tags.setTagName(param.getTagName());
         boolean success = tagsService.realDeleteTag(tags);
-        if (success){
+        if (success) {
             return ResponseUtil.success();
         }
         return ResponseUtil.forNull(ResponseEnum.TAG_FAILED);
