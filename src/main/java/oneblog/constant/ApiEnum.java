@@ -15,6 +15,7 @@ public enum ApiEnum {
     UPLOAD_FAILED(6006, "文件上传失败，请稍后重试！"),
     UPLOAD_SUCCESS(6007, "文件上传成功！"),
     UPLOAD_EMPTY(6008, "上传文件为空，请选择文件后上传！"),
+    USER_SESSION_EMPTY(6009, "未获取到用户登录信息！"),
 
 
     ;

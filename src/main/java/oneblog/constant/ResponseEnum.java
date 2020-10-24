@@ -13,12 +13,11 @@ public enum ResponseEnum {
     ROLE_FAILED(4005, "角色操作失败。"),
     TAG_EXIST(4006, "标签已存在。"),
     TAG_FAILED(4007, "标签操作失败。"),
-    TAG_NOT_MATCH(4008, "该标签ID与名称不匹配。"),
+    TAG_NOT_MATCH(4008, "标签ID与名称不匹配。"),
     CATE_EXIST(4009, "类别已存在。"),
     CATE_FAILED(4010, "类别操作失败。"),
-    CATE_NOT_MATCH(4011, "该类别ID与名称不匹配。"),
-
-
+    CATE_NOT_MATCH(4011, "类别ID与名称不匹配。"),
+    ARTICLE_SAVE_FAILED(4012, "文章保存失败。"),
     ;
 
 

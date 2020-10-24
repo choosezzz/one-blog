@@ -1,6 +1,5 @@
 $(function(){
     const data4Vue = {
-        uri:'articles',
         beans: [],
         pagination:{},
         articles_read_count: {}
@@ -14,17 +13,17 @@ $(function(){
         },
         methods: {
             list:function(start){
-                const url = this.uri+"?start="+start;
+                const url = "/article/list";
                 axios.get(url).then(function(response) {
                     vue.pagination = response.data;
-                    vue.beans = response.data.content;
+                    vue.beans = response.data.data;
 
                     for (let i = 0; i < vue.beans.length; ++i) {
                         vue.$set(vue.articles_read_count, vue.beans[i].id, 0);
-                        const url = "/articles/read_count";
+                       /* const url = "/articles/read_count";
                         axios.post(url, vue.beans[i]).then(function(response) {
                             vue.$set(vue.articles_read_count, vue.beans[i].id, response.data.data.read_count);
-                        });
+                        });*/
                     }
                 });
             },

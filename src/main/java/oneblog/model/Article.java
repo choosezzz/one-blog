@@ -1,7 +1,11 @@
 package oneblog.model;
 
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.ToString;
 
+import java.util.Date;
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@ToString
 public class Article {
     private Integer id;
 
@@ -15,7 +19,7 @@ public class Article {
 
     private Byte type;
 
-    private Short category;
+    private Integer category;
 
     private String tags;
 
@@ -75,11 +79,11 @@ public class Article {
         this.type = type;
     }
 
-    public Short getCategory() {
+    public Integer getCategory() {
         return category;
     }
 
-    public void setCategory(Short category) {
+    public void setCategory(Integer category) {
         this.category = category;
     }
 

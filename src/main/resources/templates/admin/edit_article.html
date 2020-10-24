@@ -180,7 +180,7 @@
                     this.article.content = this.editor.getData();
                     axios.put(url,vue.article).then(function(response){
                         if (response.data.id > 0) {
-                            location.href = "/admin_article";
+                            location.href = "/m/article";
                         } else {
                             vue.message = "编辑失败!";
                             vue.show = true;

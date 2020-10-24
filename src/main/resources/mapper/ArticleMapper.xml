@@ -8,7 +8,7 @@
     <result column="original_target" property="originalTarget" jdbcType="VARCHAR" />
     <result column="title" property="title" jdbcType="VARCHAR" />
     <result column="type" property="type" jdbcType="TINYINT" />
-    <result column="category" property="category" jdbcType="SMALLINT" />
+    <result column="category" property="category" jdbcType="INTEGER" />
     <result column="tags" property="tags" jdbcType="VARCHAR" />
     <result column="publish_time" property="publishTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
@@ -32,6 +32,13 @@
     from article
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectAll" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from article
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from article
     where id = #{id,jdbcType=INTEGER}
@@ -44,7 +51,7 @@
       )
     values (#{id,jdbcType=INTEGER}, #{author,jdbcType=INTEGER}, #{originalAuthor,jdbcType=VARCHAR}, 
       #{originalTarget,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT}, 
-      #{category,jdbcType=SMALLINT}, #{tags,jdbcType=VARCHAR}, #{publishTime,jdbcType=TIMESTAMP}, 
+      #{category,jdbcType=INTEGER}, #{tags,jdbcType=VARCHAR}, #{publishTime,jdbcType=TIMESTAMP},
       #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, #{content,jdbcType=LONGVARCHAR}
       )
   </insert>
@@ -108,7 +115,7 @@
         #{type,jdbcType=TINYINT},
       </if>
       <if test="category != null" >
-        #{category,jdbcType=SMALLINT},
+        #{category,jdbcType=INTEGER},
       </if>
       <if test="tags != null" >
         #{tags,jdbcType=VARCHAR},
@@ -146,7 +153,7 @@
         type = #{type,jdbcType=TINYINT},
       </if>
       <if test="category != null" >
-        category = #{category,jdbcType=SMALLINT},
+        category = #{category,jdbcType=INTEGER},
       </if>
       <if test="tags != null" >
         tags = #{tags,jdbcType=VARCHAR},
@@ -173,7 +180,7 @@
       original_target = #{originalTarget,jdbcType=VARCHAR},
       title = #{title,jdbcType=VARCHAR},
       type = #{type,jdbcType=TINYINT},
-      category = #{category,jdbcType=SMALLINT},
+      category = #{category,jdbcType=INTEGER},
       tags = #{tags,jdbcType=VARCHAR},
       publish_time = #{publishTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
@@ -188,7 +195,7 @@
       original_target = #{originalTarget,jdbcType=VARCHAR},
       title = #{title,jdbcType=VARCHAR},
       type = #{type,jdbcType=TINYINT},
-      category = #{category,jdbcType=SMALLINT},
+      category = #{category,jdbcType=INTEGER},
       tags = #{tags,jdbcType=VARCHAR},
       publish_time = #{publishTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},

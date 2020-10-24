@@ -39,4 +39,7 @@ public class AuthResult {
     public static ResponseVO<String> uploadSuccess(String filePath) {
         return new ResponseVO(ApiEnum.UPLOAD_SUCCESS, filePath);
     }
+    public static ResponseVO userInfoEmpty() {
+        return new ResponseVO(ApiEnum.USER_SESSION_EMPTY);
+    }
 }

@@ -22,7 +22,7 @@
                         <li class="am-active">发布博客</li>
                     </ol>
                     <!--发布博客表单-->
-                    <div th:replace="include/alert::html"></div>
+                    <div th:replace="include/tips::html"></div>
                     <form class="am-form am-form-horizontal">
                         <div class="am-form-group pub-blog-form">
                             <label for="doc-ipt-3" class="col-sm-2 am-form-label">博客标题</label>
@@ -48,15 +48,15 @@
                         <div class="am-form-group pub-blog-form">
                             <label class="col-sm-2 am-form-label">博客类型</label>
                             <select v-model.trim="article.type">
-                                <option value="原创">原创</option>
-                                <option value="转载">转载</option>
+                                <option value="1">原创</option>
+                                <option value="2">转载</option>
                             </select>
                         </div>
 
                         <div class="am-form-group am-form-select pub-blog-form">
                             <label class="col-sm-2 am-form-label">博客分类</label>
                             <select v-model.trim="article.category">
-                                <option :value="c" v-for="c in categories">{{c.name}}</option>
+                                <option :value="c.cateId" v-for="c in categories">{{c.cateName}}</option>
                             </select>
                         </div>
 
@@ -102,13 +102,12 @@
     $(function(){
         const data4Vue = {
             editor:null,     //编辑器实例
-            uri:'articles',
             tags: [],
             categories: [],
             message: '',
             show: false,
-            article:{id:0,author:{'id':0},originalAuthor:'',title:'',content:'',
-                tags:'',type:'',category:{'id':0},tagsId:[]}
+            article:{originalAuthor:'',originalTarget:'',title:'',content:'',
+                tags:'',type:0,category:0,tagsId:[]}
         };
         //ViewModel
         const vue = new Vue({
@@ -129,57 +128,64 @@
                     });
                 },
                 loadCategory: function() {
-                    const url = "/all_categories";
+                    const url = "/cate/list";
                     axios.get(url).then(function(response){
-                        vue.categories = response.data;
+                        vue.categories = response.data.data;
                     });
                 },
                 closeAlert: function() {
                     vue.show = false;
                 },
+                showMsg: function (){
+                    vue.show = true;
+                    setTimeout(function () {
+                        vue.show = false;
+                    }, 2500)
+                },
                 add: function () {
                     if (isEmpty(this.article.title)) {
                         vue.message = "\"博客标题\"不能为空!";
-                        vue.show = true;
+                        this.showMsg();
                         return;
                     }
-                    if (isEmpty(this.article.type)) {
+                    if (!isBiggerThan0(this.article.type)) {
                         vue.message = "\"博客类型\"不能为空!";
-                        vue.show = true;
+                       this.showMsg();
                         return;
                     }
-                    if (!isBiggerThan0(this.article.category.id)) {
+                    if (!isBiggerThan0(this.article.category)) {
                         vue.message = "\"博客分类\"不能为空!";
-                        vue.show = true;
+                       this.showMsg();
                         return;
                     }
-                    if (isEmpty(this.article.tagsId)) {
+                    if (this.article.tagsId.length<=0) {
                         vue.message = "\"博客标签\"不能为空!";
-                        vue.show = true;
+                       this.showMsg();
                         return;
                     }
                     if (this.article.tagsId.length>5) {
                         vue.message = "\"博客标签\"不能超过5个!";
-                        vue.show = true;
+                       this.showMsg();
                         return;
                     }
-                    if (isEmpty(this.article.originalAuthor) && this.article.type=='转载') {
+                    this.article.tags=this.article.tagsId.join(",");
+                    if (isEmpty(this.article.originalAuthor) && this.article.type==='2') {
                         vue.message = "\"转载\"博客需填写源作者!";
-                        vue.show = true;
+                       this.showMsg();
                         return;
                     }
 
-                    const url = this.uri;
+                    const url = "/article/write";
                     this.article.content = this.editor.getData();
                     axios.post(url,this.article).then(function(response){
-                        if (response.data.id > 0) {
-                            location.href = "/admin_article";
+                        if (response.data.code == 2001) {
+                            location.href = "/m/article";
                         } else {
-                            vue.show = true;
-                            vue.message = "发布失败!";
+                            vue.showMsg();
+                            vue.message = response.data.msg;
                         }
                     }).catch(function (error) {
-                        vue.show = true;
+                        vue.showMsg();
                         vue.message = error;
                     });
                 },

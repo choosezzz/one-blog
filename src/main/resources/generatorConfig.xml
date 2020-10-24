@@ -39,7 +39,7 @@
         </javaClientGenerator>
 
         <!--要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名，这里举例，只配置了一个table，你可以配置多个-->
-        <table tableName="role" domainObjectName="Role" enableCountByExample="false"
+    <!--    <table tableName="role" domainObjectName="Role" enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
         <table tableName="tags" domainObjectName="Tags" enableCountByExample="false"
@@ -55,6 +55,10 @@
                enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
         <table tableName="category" domainObjectName="Category" enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>-->
+
+        <table tableName="article_count" domainObjectName="ArticleCount" enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
 
