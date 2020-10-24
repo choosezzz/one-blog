@@ -1,46 +1,47 @@
 $(function(){
     const data4Vue = {
-        uri:'categories',
+        uri:'/cate_m',
         countAll: 0,
         countArticle: 0,
         message: '',
         show: false,
         beans: [],
-        category: {id:0,categoryName:''},
+        cateBean: {},
         pagination:{}
     };
     //ViewModel
     const vue = new Vue({
         el: '#app',
         data: data4Vue,
-        mounted:function(){ //mounted　表示这个 Vue 对象加载成功了
+        mounted:function(){
             this.list(0);
             this.count();
         },
         methods: {
             count:function(){
-                var url = "admin_category/count_all";
+                var url = this.uri + "/count";
                 axios.get(url).then(function(response) {
-                    vue.countAll = response.data.data.countAll;
+                    vue.countAll = response.data.data;
                 });
-                url = "/count_article_all";
+                url = "/article/count";
                 axios.get(url).then(function(response) {
-                    vue.countArticle = response.data.data.countArticleAll;
+                    vue.countArticle = response.data.data;
                 });
             },
             list:function(start){
-                const url =  "admin_category/"+this.uri+"_of_page?start="+start;
+                const url = this.uri + "/list";
                 axios.get(url).then(function(response) {
                     vue.pagination = response.data;
-                    vue.beans = response.data.content;
+                    vue.beans = response.data.data;
                 });
             },
             addBean: function(name) {
-                const url = this.uri+"?name="+name;
-                axios.post(url,this.category).then(function(response){
-                    if (response.data.id > 0) {
-                        location.href = "/admin_category";
-                    } else if (response.data.id == -1) {
+                const url = this.uri+"/add";
+                this.cateBean.cateName=name;
+                axios.post(url,this.cateBean).then(function(response){
+                    if (response.data.code == 2001) {
+                        location.href = "/m/category";
+                    } else if (response.data.code == 4009) {
                         vue.message = "\"博客分类\"已存在!";
                         vue.show = true;
                     } else {

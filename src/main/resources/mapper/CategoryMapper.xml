@@ -15,6 +15,7 @@
     <include refid="Base_Column_List" />
     from category
     where cate_id = #{cateId,jdbcType=INTEGER}
+    limit 1
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
     select
@@ -22,9 +23,16 @@
     from category
     where status = 1
   </select>
+  <select id="count" resultType="int">
+    select
+    count(1)
+    from category
+    where status = 1
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from category
     where cate_id = #{cateId,jdbcType=INTEGER}
+    limit 1
   </delete>
   <insert id="insertSelective" parameterType="oneblog.model.Category" useGeneratedKeys="true" keyProperty="cateId">
     insert into category

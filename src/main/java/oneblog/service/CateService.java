@@ -14,4 +14,5 @@ public interface CateService {
     Category getCateById(Integer cateId);
     List<Category> list();
     Boolean cateExist(String cateName);
+    int count();
 }

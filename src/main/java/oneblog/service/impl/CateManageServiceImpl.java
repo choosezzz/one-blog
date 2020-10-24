@@ -66,4 +66,9 @@ public class CateManageServiceImpl implements CateService {
     public Boolean cateExist(String cateName) {
         return redisService.getCateId(cateName) != null;
     }
+
+    @Override
+    public int count() {
+        return categoryMapper.count();
+    }
 }

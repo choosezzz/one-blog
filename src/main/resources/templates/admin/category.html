@@ -35,14 +35,14 @@
                                     <table class="categories">
                                         <tbody>
                                         <tr v-for="(category,i) in beans">
-                                            <td><a :href="'/categories?cid='+category.id+'&name='+category.name+'&start=0'" target="_blank"><span style="font-size: 16px;">{{category.name}} </span></a></td>
+                                            <td><a :href="'/categories?cid='+category.cateId+'&name='+category.cateName+'&start=0'" target="_blank"><span style="font-size: 16px;">{{category.cateName}} </span></a></td>
                                             <td><div class="am-progress am-progress-striped am-progress-sm am-active admin-categories-bar">
                                                     <div class="am-progress-bar am-progress-bar-secondary" v-if="(i+1)%2==1" :style="{width:percent(category.articleCount) + '%'}"></div>
                                                     <div class="am-progress-bar am-progress-bar-success" v-else :style="{width:percent(category.articleCount) + '%'}"></div>
                                                 </div>
                                                 <span> {{category.articleCount}} / {{percent(category.articleCount)}}%</span>
                                             </td>
-                                            <td><a class="am-icon-remove" @click="deleteBean(category.id, category.articleCount)" style="margin-left: 20px;"></a></td>
+                                            <td><a class="am-icon-remove" @click="deleteBean(category.cateId, category.articleCount)" style="margin-left: 20px;"></a></td>
                                         </tr>
                                         </tbody>
                                     </table>

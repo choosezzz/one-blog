@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Date;
 
 /**
@@ -28,8 +29,17 @@ public class CateManageController {
     @Autowired
     private CateService cateService;
 
+    @GetMapping("/count")
+    public ResponseVO count(){
+        return ResponseUtil.success(cateService.count());
+    }
+    @GetMapping("/list")
+    public ResponseVO list(){
+        return ResponseUtil.success(cateService.list());
+    }
+
     @PostMapping("/add")
-    public ResponseVO addCate(@RequestBody AddCateParam param){
+    public ResponseVO addCate(@RequestBody @Valid AddCateParam param){
         log.info("add cate, param:{}", param);
         Boolean exist = cateService.cateExist(param.getCateName());
         if (exist){
@@ -46,8 +56,9 @@ public class CateManageController {
         return ResponseUtil.forNull(ResponseEnum.CATE_FAILED);
     }
     @GetMapping("/delete")
-    public ResponseVO deleteCate(Integer cateId){
-        log.info("add cate, traceId={}, param:{}", TraceUtil.getTraceId(), cateId);
+    public ResponseVO deleteCate(@RequestParam("cateId") Integer cateId){
+        log.info("delete cate, traceId={}, param:{}", TraceUtil.getTraceId(), cateId);
+
         int i = cateService.deleteCate(cateId);
         if (i > 0){
             return ResponseUtil.success();
