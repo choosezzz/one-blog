@@ -25,7 +25,7 @@
     content
   </sql>
   <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
-    select 
+    select
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
@@ -202,4 +202,76 @@
       status = #{status,jdbcType=TINYINT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
+  <resultMap id="detailInfo" type="oneblog.web.response.vo.ArticleDetailVO">
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="author" property="author" jdbcType="INTEGER" />
+    <result column="original_author" property="originalAuthor" jdbcType="VARCHAR" />
+    <result column="original_target" property="originalTarget" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+    <result column="type" property="type" jdbcType="TINYINT" />
+    <result column="tags" property="tags" jdbcType="VARCHAR" />
+    <result column="publish_time" property="publishTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="likes" property="likes" jdbcType="INTEGER" />
+    <result column="views" property="views" jdbcType="INTEGER" />
+    <association property="category" javaType="oneblog.model.Category">
+      <id column="cate_id" property="cateId" jdbcType="INTEGER"/>
+      <result column="cate_name" property="cateName" jdbcType="VARCHAR" />
+    </association>
+  </resultMap>
+
+  <select id="selectDetailInfoById" resultMap="detailInfo" parameterType="java.lang.Integer">
+    SELECT
+        a.id,
+        author,
+        original_target,
+        original_author,
+        title,
+        content,
+        type,
+        tags,
+        publish_time,
+        update_time,
+        c.cate_id,
+        c.cate_name,
+        v.views,
+        l.likes
+    FROM
+        article a
+        LEFT JOIN category c ON a.category = c.cate_id
+        LEFT JOIN article_views v on a.id=v.article_id
+        LEFT JOIN article_likes l on a.id=l.article_id
+    WHERE
+        a.id = #{articleId}
+    limit 1
+  </select>
+  <select id="selectDetailInfoList" resultMap="detailInfo" parameterType="java.lang.Integer">
+    SELECT
+        a.id,
+        author,
+        original_target,
+        original_author,
+        title,
+        content,
+        type,
+        tags,
+        publish_time,
+        update_time,
+        c.cate_id,
+        c.cate_name,
+        v.views,
+        l.likes
+    FROM
+        article a
+        LEFT JOIN category c ON a.category = c.cate_id
+        LEFT JOIN article_views v on a.id=v.article_id
+        LEFT JOIN article_likes l on a.id=l.article_id
+  </select>
+
+  <select id="count" resultType="java.lang.Long">
+    select count(1) from article
+  </select>
 </mapper>

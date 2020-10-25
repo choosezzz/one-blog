@@ -1,5 +1,6 @@
 package oneblog.web.controller;
 
+import jdk.nashorn.internal.objects.annotations.Getter;
 import lombok.extern.log4j.Log4j2;
 import oneblog.constant.ApiConstant;
 import oneblog.constant.ResponseEnum;
@@ -11,6 +12,7 @@ import oneblog.utils.ResponseUtil;
 import oneblog.utils.TraceUtil;
 import oneblog.web.param.ArticleParam;
 import oneblog.web.response.ResponseVO;
+import oneblog.web.response.vo.ArticleDetailVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -63,7 +65,7 @@ public class ArticleController {
     }
 
     @GetMapping("/list")
-    public ResponseVO<List<Article>> listArticle(){
+    public ResponseVO<List<ArticleDetailVO>> listArticle() {
         return ResponseUtil.success(articleService.articleList());
     }
 }

@@ -64,7 +64,7 @@
       #{salt,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, #{registerTime,jdbcType=TIMESTAMP},
       #{status,jdbcType=TINYINT}, #{type,jdbcType=TINYINT})
   </insert>
-    <insert id="insertSelective" parameterType="oneblog.model.User"  useGeneratedKeys="true" keyProperty="userId">
+    <insert id="insertSelective" parameterType="oneblog.model.User" useGeneratedKeys="true" keyProperty="userId">
         insert into user
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="userId != null">
@@ -220,4 +220,7 @@
       type = #{type,jdbcType=TINYINT}
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
+    <select id="count" resultType="java.lang.Long">
+        select count(1) from user
+    </select>
 </mapper>

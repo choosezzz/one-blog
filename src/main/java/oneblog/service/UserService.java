@@ -30,4 +30,6 @@ public interface UserService {
     boolean existUser(String userName);
 
     int updateByUserId(User user);
+
+    long count();
 }

@@ -35,10 +35,10 @@
                                             <tbody class="tables">
                                                 <tr id="" v-for="a in beans">
                                                     <td><a :href="'/article?aid='+a.id" target="_blank">{{a.title}}</a></td>
-                                                    <td>{{a.publishDate | formatDateTimeFilter}}</td>
-                                                    <td><a :href="'/categories?cid='+a.category.id+'&name='+a.category.name+'&start=0'" target="_blank">{{a.category.name}}</a></td>
+                                                    <td>{{a.publishTime | formatDateTimeFilter}}</td>
+                                                    <td><a :href="'/categories?cid='+a.category.cateId+'&name='+a.category.cateName+'&start=0'" target="_blank">{{a.category.cateName}}</a></td>
                                                     <td>{{a.likes}}</td>
-                                                    <td>{{articles_read_count[a.id]}}</td>
+                                                    <td>{{a.views}}</td>
                                                     <td>
                                                         <div class="am-dropdown" data-am-dropdown>
                                                             <a :href="'/admin_edit_article?id=' + a.id"><button class="articleManagementBtn articleEditor am-btn am-btn-secondary">编辑</button></a>

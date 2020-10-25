@@ -103,4 +103,9 @@ public class UserServiceImpl implements UserService {
 
         return userMapper.updateByPrimaryKeySelective(user);
     }
+
+    @Override
+    public long count() {
+        return userMapper.count();
+    }
 }

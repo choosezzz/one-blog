@@ -4,6 +4,7 @@ import oneblog.dao.ArticleMapper;
 import oneblog.model.Article;
 import oneblog.service.ArticleCountService;
 import oneblog.service.ArticleService;
+import oneblog.web.response.vo.ArticleDetailVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,7 +63,12 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<Article> articleList() {
-        return articleMapper.selectAll();
+    public List<ArticleDetailVO> articleList() {
+        return articleMapper.selectDetailInfoList();
+    }
+
+    @Override
+    public long count() {
+        return articleMapper.count();
     }
 }

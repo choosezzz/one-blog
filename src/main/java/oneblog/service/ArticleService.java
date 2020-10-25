@@ -1,6 +1,7 @@
 package oneblog.service;
 
 import oneblog.model.Article;
+import oneblog.web.response.vo.ArticleDetailVO;
 
 import java.util.List;
 
@@ -35,5 +36,11 @@ public interface ArticleService {
      * 文章列表
      * @return
      */
-    List<Article> articleList();
+    List<ArticleDetailVO> articleList();
+
+    /**
+     * 文章总数量
+     * @return
+     */
+    long count();
 }

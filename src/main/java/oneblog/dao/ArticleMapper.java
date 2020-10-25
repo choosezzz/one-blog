@@ -1,6 +1,7 @@
 package oneblog.dao;
 
 import oneblog.model.Article;
+import oneblog.web.response.vo.ArticleDetailVO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,4 +22,8 @@ public interface ArticleMapper {
     int updateByPrimaryKeyWithBLOBs(Article record);
 
     int updateByPrimaryKey(Article record);
+
+    ArticleDetailVO selectDetailInfoById(Integer articleId);
+    List<ArticleDetailVO> selectDetailInfoList();
+    long count();
 }
