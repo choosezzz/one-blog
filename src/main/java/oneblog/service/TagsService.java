@@ -38,4 +38,6 @@ public interface TagsService {
     Boolean tagExist(String tagName);
 
     Integer getNormalTagsCount();
+
+    List<Tags> batchGetTags(List<Integer> tagIds);
 }

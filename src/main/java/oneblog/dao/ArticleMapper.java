@@ -24,7 +24,8 @@ public interface ArticleMapper {
 
     int updateByPrimaryKey(Article record);
 
-    ArticleDetailVO selectDetailInfoById(@Param("articleId") Integer articleId,@Param("userId") Integer userId);
+    ArticleDetailVO selectDetailInfoByIdWithUser(@Param("articleId") Integer articleId, @Param("userId") Integer userId);
+    ArticleDetailVO selectDetailInfoById(@Param("articleId") Integer articleId);
     List<ArticleDetailVO> selectDetailInfoList(Integer userId);
     long count();
 }

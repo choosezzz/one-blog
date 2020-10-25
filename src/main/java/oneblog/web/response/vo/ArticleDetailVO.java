@@ -5,9 +5,11 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 import oneblog.model.Category;
+import oneblog.model.Tags;
 import oneblog.model.User;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author dingshuangen
@@ -35,6 +37,8 @@ public class ArticleDetailVO {
     private Category category;
 
     private String tags;
+
+    private List<Tags> tagList;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date publishTime;

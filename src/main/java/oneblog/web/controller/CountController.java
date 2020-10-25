@@ -44,4 +44,17 @@ public class CountController {
     public ResponseVO<Long> allUserCount(){
         return ResponseUtil.success(userService.count());
     }
+    @GetMapping("/comments")
+    public ResponseVO<Long> allCommentsCount(){
+        return ResponseUtil.success(9999L);
+    }
+    @GetMapping("/browse")
+    public ResponseVO<Long> allBrowseCount(){
+        return ResponseUtil.success(9999L);
+    }
+    @GetMapping("/visitors")
+    public ResponseVO<Long> allVisitorsCount(){
+        return ResponseUtil.success(9999L);
+    }
+
 }

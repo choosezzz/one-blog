@@ -1,6 +1,7 @@
 package oneblog.dao;
 
 import oneblog.model.Tags;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,6 +15,9 @@ public interface TagsMapper {
     int insertSelective(Tags record);
 
     Tags selectByPrimaryKey(Integer tagId);
+
+    List<Tags> batchGetTagsByPrimaryKey(@Param("tagIds") List<Integer> tagIds);
+
     Tags selectByTagName(String tagName);
     List<Tags> selectAll(Byte status);
 

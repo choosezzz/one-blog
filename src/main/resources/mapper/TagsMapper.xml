@@ -16,6 +16,15 @@
     from tags
     where tag_id = #{tagId,jdbcType=INTEGER}
   </select>
+  <select id="batchGetTagsByPrimaryKey" resultMap="BaseResultMap" parameterType="java.util.List"  >
+    select
+    <include refid="Base_Column_List" />
+    from tags
+    where tag_id in
+    <foreach collection="tagIds" open="(" close=")" separator="," item="tagId">
+      #{tagId}
+    </foreach>
+  </select>
 
   <select id="count" resultType="java.lang.Integer">
     select count(1) from tags where status = 1

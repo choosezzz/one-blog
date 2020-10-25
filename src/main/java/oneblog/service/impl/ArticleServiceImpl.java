@@ -2,6 +2,7 @@ package oneblog.service.impl;
 
 import oneblog.dao.ArticleMapper;
 import oneblog.model.Article;
+import oneblog.model.Tags;
 import oneblog.service.ArticleCountService;
 import oneblog.service.ArticleService;
 import oneblog.web.response.vo.ArticleDetailVO;
@@ -69,7 +70,23 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public ArticleDetailVO getArticleDetailById(Integer articleId, Integer userId) {
-        return articleMapper.selectDetailInfoById(articleId, userId);
+        ArticleDetailVO detailInfo = articleMapper.selectDetailInfoByIdWithUser(articleId, userId);
+        if (detailInfo != null && StringUtils.isNotEmpty(detailInfo.getTags())){
+            String[] tags = detailInfo.getTags().split(",");
+            List<Tags> tagsList = redisService.batchGetTags(Arrays.asList(tags));
+            detailInfo.setTagList(tagsList);
+        }
+        return detailInfo;
+    }
+    @Override
+    public ArticleDetailVO getArticleDetailById(Integer articleId) {
+        ArticleDetailVO detailInfo = articleMapper.selectDetailInfoById(articleId);
+        if (detailInfo != null && StringUtils.isNotEmpty(detailInfo.getTags())){
+            String[] tags = detailInfo.getTags().split(",");
+            List<Tags> tagsList = redisService.batchGetTags(Arrays.asList(tags));
+            detailInfo.setTagList(tagsList);
+        }
+        return detailInfo;
     }
 
     @Override

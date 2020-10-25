@@ -115,6 +115,13 @@ public class ArticleController {
         return ResponseUtil.success(detailInfo);
     }
 
+    @GetMapping("/view/{aid}")
+    public ResponseVO<ArticleDetailVO> getViewArticle(@PathVariable(name = "aid") Integer articleId) {
+        log.info("getArticle:id={},traceId={}", articleId, TraceUtil.getTraceId());
+        ArticleDetailVO detailInfo = articleService.getArticleDetailById(articleId);
+        return ResponseUtil.success(detailInfo);
+    }
+
     private User getUserFromSession(HttpSession session) {
         Object attribute = session.getAttribute(ApiConstant.SESSION_USER);
         if (attribute == null) {

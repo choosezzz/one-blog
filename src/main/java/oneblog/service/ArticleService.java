@@ -44,6 +44,7 @@ public interface ArticleService {
      * @return
      */
     ArticleDetailVO getArticleDetailById(Integer articleId, Integer userId);
+    ArticleDetailVO getArticleDetailById(Integer articleIdd);
 
     /**
      * 文章总数量

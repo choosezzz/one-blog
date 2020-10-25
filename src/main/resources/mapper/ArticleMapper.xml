@@ -226,58 +226,45 @@
     </association>
   </resultMap>
 
-  <select id="selectDetailInfoById" resultMap="detailInfo" parameterType="java.lang.Integer">
+  <sql id="detailFields">
     SELECT
-        a.id,
-        original_target,
-        original_author,
-        title,
-        content,
-        a.type,
-        tags,
-        publish_time,
-        update_time,
-        c.cate_id,
-        c.cate_name,
-        v.views,
-        l.likes,
-        u.user_name,
-        user_id
-    FROM
-        article a
-        LEFT JOIN category c ON a.category = c.cate_id
-        LEFT JOIN article_views v on a.id=v.article_id
-        LEFT JOIN article_likes l on a.id=l.article_id
-        LEFT JOIN user u on a.author=u.user_id
+          a.id,
+          original_target,
+          original_author,
+          title,
+          content,
+          a.type,
+          tags,
+          publish_time,
+          update_time,
+          c.cate_id,
+          c.cate_name,
+          v.views,
+          l.likes,
+          u.user_name,
+          user_id
+      FROM
+          article a
+          LEFT JOIN category c ON a.category = c.cate_id
+          LEFT JOIN article_views v on a.id=v.article_id
+          LEFT JOIN article_likes l on a.id=l.article_id
+          LEFT JOIN user u on a.author=u.user_id
+  </sql>
+  <select id="selectDetailInfoByIdWithUser" resultMap="detailInfo" parameterType="java.lang.Integer">
+  <include refid="detailFields"></include>
     WHERE
         a.id = #{articleId}
         and a.author=#{userId}
     limit 1
   </select>
+  <select id="selectDetailInfoById" resultMap="detailInfo" parameterType="java.lang.Integer">
+    <include refid="detailFields"></include>
+    WHERE
+    a.id = #{articleId}
+    limit 1
+  </select>
   <select id="selectDetailInfoList" resultMap="detailInfo" parameterType="java.lang.Integer">
-    SELECT
-        a.id,
-        author,
-        original_target,
-        original_author,
-        title,
-        content,
-        a.type,
-        tags,
-        publish_time,
-        update_time,
-        c.cate_id,
-        c.cate_name,
-        v.views,
-        l.likes,
-        u.user_name,
-        user_id
-    FROM
-        article a
-        LEFT JOIN category c ON a.category = c.cate_id
-        LEFT JOIN article_views v on a.id=v.article_id
-        LEFT JOIN article_likes l on a.id=l.article_id
-        LEFT JOIN user u on a.author=u.user_id
+    <include refid="detailFields"></include>
     where a.author=#{userId}
   </select>
 

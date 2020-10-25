@@ -31,7 +31,7 @@ public class TagsServiceImpl implements TagsService {
 
         int i = tagsMapper.insertSelective(tags);
         if (i > 0) {
-            redisService.setTagId(tags);
+            redisService.addTags(tags);
             return true;
         }
         return false;
@@ -43,7 +43,7 @@ public class TagsServiceImpl implements TagsService {
 
         int i = tagsMapper.updateByPrimaryKeySelective(tags);
         if (i > 0) {
-            redisService.setTagId(tags);
+            redisService.addTags(tags);
             return true;
         }
         return false;
@@ -52,10 +52,9 @@ public class TagsServiceImpl implements TagsService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean realDeleteTag(Tags tags) {
-
         int i = tagsMapper.deleteByPrimaryKey(tags.getTagId());
         if (i > 0) {
-            redisService.deleteTagId(tags.getTagName());
+            redisService.deleteTags(tags);
             return true;
         }
         return false;
@@ -66,7 +65,7 @@ public class TagsServiceImpl implements TagsService {
     public boolean deleteTag(Tags tags) {
         int i = tagsMapper.updateByPrimaryKeySelective(tags);
         if (i > 0) {
-            redisService.deleteTagId(tags.getTagName());
+            redisService.deleteTags(tags);
             return true;
         }
         return false;
@@ -75,7 +74,7 @@ public class TagsServiceImpl implements TagsService {
     @Override
     public List<Tags> getNormalTags() {
         List<Tags> tags = tagsMapper.selectAll(ApiConstant.STATUS_NORMAL);
-        redisService.batchSetTags(tags);
+        redisService.addAllTags(tags);
         return tags;
     }
 
@@ -88,7 +87,7 @@ public class TagsServiceImpl implements TagsService {
     public Boolean tagExist(String tagName) {
 
         //先查询缓存
-        Integer tagId = redisService.getTagId(tagName);
+        Integer tagId = redisService.getTagsId(tagName);
         if (tagId != null && tagId > 0) {
             return true;
         }
@@ -96,10 +95,15 @@ public class TagsServiceImpl implements TagsService {
         Tags tags = tagsMapper.selectByTagName(tagName);
         if (tags != null) {
             //写入缓存
-            redisService.setTagId(tags);
+            redisService.addTags(tags);
             return true;
         }
         return false;
+    }
+
+    @Override
+    public List<Tags> batchGetTags(List<Integer> tagIds) {
+        return tagsMapper.batchGetTagsByPrimaryKey(tagIds);
     }
 
     @Override

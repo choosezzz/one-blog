@@ -4,11 +4,11 @@ $(function(){
     const data4Vue = {
         share_pic: 'http://www.siriusshum.club/img/icon.jpg',
         item: '',
-        uri:'articles',
+        uri:'/',
         message: '',
         wsLink: '',
         show: false,
-        article: {category:{id:0},author:{id:0}},
+        article: {category:{cateId:0},author:{userId:0}},
         like:{},
         comment_like:{comment:{id:0}},
         pagination:{},
@@ -25,7 +25,7 @@ $(function(){
     const vue = new Vue({
         el: '#app',
         data: data4Vue,
-        mounted:function(){ //mounted　表示这个 Vue 对象加载成功了
+        mounted:function(){
             // this.getWSLink();
             this.get();
             this.is_liked();
@@ -33,16 +33,17 @@ $(function(){
         },
         methods: {
             get:function(){
-                const url = this.uri+"/"+aid;
+                const url = "/article/view/"+aid;
                 axios.get(url).then(function(response) {
-                    if (response.data == null || $.isEmptyObject(response.data)) {
+                    if (response.data == null || $.isEmptyObject(response.data) || response.data.code != 2001) {
                         window.location.href="/page404";
                         return;
                     }
-                    vue.article = response.data;
-                    vue.list(0);
+                    vue.article = response.data.data;
+                    console.log(vue.article)
+                    /*vue.list(0);
                     vue.getReadCount();
-                    vue.wechatConfig();
+                    vue.wechatConfig();*/
                     var qrcode = new QRCode(document.getElementById("qrcode"), {
                         width : 150,
                         height : 150

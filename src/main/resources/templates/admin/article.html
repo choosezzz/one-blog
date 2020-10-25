@@ -34,9 +34,9 @@
                                             </thead>
                                             <tbody class="tables">
                                                 <tr id="" v-for="a in beans">
-                                                    <td><a :href="'/article?aid='+a.id" target="_blank">{{a.title}}</a></td>
+                                                    <td><a :href="'/c/article?aid='+a.id" target="_blank">{{a.title}}</a></td>
                                                     <td>{{a.publishTime | formatDateTimeFilter}}</td>
-                                                    <td><a :href="'/categories?cid='+a.category.cateId+'&name='+a.category.cateName+'&start=0'" target="_blank">{{a.category.cateName}}</a></td>
+                                                    <td><a :href="'/c/categories?cateId='+a.category.cateId+'&cateName='+a.category.cateName "target="_blank">{{a.category.cateName}}</a></td>
                                                     <td>{{a.likes}}</td>
                                                     <td>{{a.views}}</td>
                                                     <td>

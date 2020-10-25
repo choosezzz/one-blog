@@ -68,7 +68,7 @@ public class TagController {
     public ResponseVO deleteTags(@RequestBody @Valid DeleteTagParam param) {
         logger.info("[delete tag]: param = {}", param);
 
-        Integer tagId = redisService.getTagId(param.getTagName());
+        Integer tagId = redisService.getTagsId(param.getTagName());
         if (tagId != null && !tagId.equals(param.getTagId())) {
             return ResponseUtil.forNull(ResponseEnum.TAG_NOT_MATCH);
         }
@@ -86,7 +86,7 @@ public class TagController {
     @PostMapping(value = "/delete", name = "真实删除")
     public ResponseVO realDeleteTags(@RequestBody @Valid DeleteTagParam param) {
         logger.info("[real delete tag]: param = {}", param);
-        Integer tagId = redisService.getTagId(param.getTagName());
+        Integer tagId = redisService.getTagsId(param.getTagName());
         if (tagId != null && !tagId.equals(param.getTagId())) {
             return ResponseUtil.forNull(ResponseEnum.TAG_NOT_MATCH);
         }

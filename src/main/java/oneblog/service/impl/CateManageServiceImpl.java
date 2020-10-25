@@ -57,7 +57,7 @@ public class CateManageServiceImpl implements CateService {
     public List<Category> list() {
         List<Category> categories = categoryMapper.selectAll();
         if (CollectionUtils.isNotEmpty(categories)){
-            redisService.batchSetCate(categories);
+            redisService.setAllCate(categories);
         }
         return categories;
     }

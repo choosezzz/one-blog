@@ -2,7 +2,9 @@ package oneblog.service.impl;
 
 import oneblog.model.Category;
 import oneblog.service.CateService;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +18,10 @@ public class CateQueryServiceImpl implements CateService {
 
     @Autowired
     private RedisService redisService;
+
+    @Qualifier("CateManage")
+    @Autowired
+    private CateService cateService;
     @Override
     public int addCate(Category category) {
         return 0;
@@ -33,7 +39,11 @@ public class CateQueryServiceImpl implements CateService {
 
     @Override
     public List<Category> list() {
-        return redisService.batchGetCate();
+        List<Category> allCate = redisService.getAllCate();
+        if (CollectionUtils.isEmpty(allCate)){
+            allCate = cateService.list();
+        }
+        return allCate;
     }
 
     @Override
