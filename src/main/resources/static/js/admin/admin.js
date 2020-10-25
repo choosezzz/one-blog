@@ -1,9 +1,9 @@
 $(function(){
     var data4VueAll = {
-        uri:'/count_visit_all',
-        uriYesterday:'count_visit_yesterday',
-        uriUser:'count_user_all',
-        uriArticle:'count_article_all',
+        uriYesterday:'/count/yesterday',
+        uriVisit:'/count/visit',
+        uriUser:'/count/user',
+        uriArticle:'/count/article',
         countAll: 0,
         countYesterday: 0,
         countUserAll: 0,
@@ -14,22 +14,21 @@ $(function(){
         el: '#app',
         data: data4VueAll,
         mounted:function(){
-            this.list();
+            this.load();
         },
         methods: {
-            list:function(){
-                var url =  this.uri;
-                axios.get(url).then(function(response) {
-                    vue.countAll = response.data.data.countAll;
+            load:function(){
+                axios.get(this.uriVisit).then(function(response) {
+                    vue.countAll = response.data.data;
                 });
                 axios.get(this.uriYesterday).then(function(response) {
-                    vue.countYesterday = response.data.data.countYesterday;
+                    vue.countYesterday = response.data.data;
                 });
                 axios.get(this.uriUser).then(function(response) {
-                    vue.countUserAll = response.data.data.countUserAll;
+                    vue.countUserAll = response.data.data;
                 });
                 axios.get(this.uriArticle).then(function(response) {
-                    vue.countArticleAll = response.data.data.countArticleAll;
+                    vue.countArticleAll = response.data.data;
                 });
             }
         }
