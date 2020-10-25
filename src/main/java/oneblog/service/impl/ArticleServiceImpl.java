@@ -54,7 +54,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public int editArticle(Article article) {
-        return 0;
+        return articleMapper.updateByPrimaryKeySelective(article);
     }
 
     @Override
@@ -63,8 +63,13 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleDetailVO> articleList() {
-        return articleMapper.selectDetailInfoList();
+    public List<ArticleDetailVO> articleList(Integer userId) {
+        return articleMapper.selectDetailInfoList(userId);
+    }
+
+    @Override
+    public ArticleDetailVO getArticleDetailById(Integer articleId, Integer userId) {
+        return articleMapper.selectDetailInfoById(articleId, userId);
     }
 
     @Override

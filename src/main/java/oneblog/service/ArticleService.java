@@ -36,7 +36,14 @@ public interface ArticleService {
      * 文章列表
      * @return
      */
-    List<ArticleDetailVO> articleList();
+    List<ArticleDetailVO> articleList(Integer userId);
+
+    /**
+     * 根据id检索
+     * @param articleId
+     * @return
+     */
+    ArticleDetailVO getArticleDetailById(Integer articleId, Integer userId);
 
     /**
      * 文章总数量

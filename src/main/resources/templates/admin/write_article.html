@@ -41,7 +41,7 @@
                         <div class="am-form-group pub-blog-form">
                             <label class="col-sm-2 am-form-label">原链接</label>
                             <div class="col-sm-10">
-                                <input type="text" v-model.trim="article.originalUrl">
+                                <input type="text" v-model.trim="article.originalTarget">
                             </div>
                         </div>
 
@@ -136,57 +136,53 @@
                 closeAlert: function() {
                     vue.show = false;
                 },
-                showMsg: function (){
+                showMsg: function (message){
                     vue.show = true;
+                    vue.message = message;
                     setTimeout(function () {
                         vue.show = false;
                     }, 2500)
                 },
                 add: function () {
                     if (isEmpty(this.article.title)) {
-                        vue.message = "\"博客标题\"不能为空!";
-                        this.showMsg();
+                        this.showMsg("\"博客标题\"不能为空!");
                         return;
                     }
                     if (!isBiggerThan0(this.article.type)) {
-                        vue.message = "\"博客类型\"不能为空!";
-                       this.showMsg();
+                        this.showMsg("\"博客类型\"不能为空!");
                         return;
                     }
-                    if (!isBiggerThan0(this.article.category)) {
-                        vue.message = "\"博客分类\"不能为空!";
-                       this.showMsg();
+                    if (!isBiggerThan0(this.article.category.cateId)) {
+                        this.showMsg("\"博客分类\"不能为空!");
                         return;
                     }
-                    if (this.article.tagsId.length<=0) {
+                    if (isEmpty(this.article.tagsId)) {
                         vue.message = "\"博客标签\"不能为空!";
-                       this.showMsg();
+                        this.showMsg();
                         return;
                     }
                     if (this.article.tagsId.length>5) {
-                        vue.message = "\"博客标签\"不能超过5个!";
-                       this.showMsg();
+                        this.showMsg("\"博客标签\"不能超过5个!");
                         return;
                     }
-                    this.article.tags=this.article.tagsId.join(",");
                     if (isEmpty(this.article.originalAuthor) && this.article.type==='2') {
-                        vue.message = "\"转载\"博客需填写源作者!";
-                       this.showMsg();
+                        this.showMsg("\"转载\"博客需填写源作者!");
                         return;
                     }
 
+
                     const url = "/article/write";
                     this.article.content = this.editor.getData();
+                    this.article.tags=this.article.tagsId.join(",");
                     axios.post(url,this.article).then(function(response){
                         if (response.data.code == 2001) {
                             location.href = "/m/article";
                         } else {
-                            vue.showMsg();
-                            vue.message = response.data.msg;
+                            vue.showMsg(response.data.msg);
+                            return;
                         }
                     }).catch(function (error) {
-                        vue.showMsg();
-                        vue.message = error;
+                        vue.showMsg(error);
                     });
                 },
                 initCKEditor() {

@@ -206,7 +206,6 @@
 
   <resultMap id="detailInfo" type="oneblog.web.response.vo.ArticleDetailVO">
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="author" property="author" jdbcType="INTEGER" />
     <result column="original_author" property="originalAuthor" jdbcType="VARCHAR" />
     <result column="original_target" property="originalTarget" jdbcType="VARCHAR" />
     <result column="title" property="title" jdbcType="VARCHAR" />
@@ -221,31 +220,38 @@
       <id column="cate_id" property="cateId" jdbcType="INTEGER"/>
       <result column="cate_name" property="cateName" jdbcType="VARCHAR" />
     </association>
+    <association property="author" javaType="oneblog.model.User">
+      <id column="user_id" property="userId" jdbcType="INTEGER"/>
+      <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    </association>
   </resultMap>
 
   <select id="selectDetailInfoById" resultMap="detailInfo" parameterType="java.lang.Integer">
     SELECT
         a.id,
-        author,
         original_target,
         original_author,
         title,
         content,
-        type,
+        a.type,
         tags,
         publish_time,
         update_time,
         c.cate_id,
         c.cate_name,
         v.views,
-        l.likes
+        l.likes,
+        u.user_name,
+        user_id
     FROM
         article a
         LEFT JOIN category c ON a.category = c.cate_id
         LEFT JOIN article_views v on a.id=v.article_id
         LEFT JOIN article_likes l on a.id=l.article_id
+        LEFT JOIN user u on a.author=u.user_id
     WHERE
         a.id = #{articleId}
+        and a.author=#{userId}
     limit 1
   </select>
   <select id="selectDetailInfoList" resultMap="detailInfo" parameterType="java.lang.Integer">
@@ -256,19 +262,23 @@
         original_author,
         title,
         content,
-        type,
+        a.type,
         tags,
         publish_time,
         update_time,
         c.cate_id,
         c.cate_name,
         v.views,
-        l.likes
+        l.likes,
+        u.user_name,
+        user_id
     FROM
         article a
         LEFT JOIN category c ON a.category = c.cate_id
         LEFT JOIN article_views v on a.id=v.article_id
         LEFT JOIN article_likes l on a.id=l.article_id
+        LEFT JOIN user u on a.author=u.user_id
+    where a.author=#{userId}
   </select>
 
   <select id="count" resultType="java.lang.Long">

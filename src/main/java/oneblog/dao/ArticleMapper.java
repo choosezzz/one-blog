@@ -2,6 +2,7 @@ package oneblog.dao;
 
 import oneblog.model.Article;
 import oneblog.web.response.vo.ArticleDetailVO;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public interface ArticleMapper {
 
     int updateByPrimaryKey(Article record);
 
-    ArticleDetailVO selectDetailInfoById(Integer articleId);
-    List<ArticleDetailVO> selectDetailInfoList();
+    ArticleDetailVO selectDetailInfoById(@Param("articleId") Integer articleId,@Param("userId") Integer userId);
+    List<ArticleDetailVO> selectDetailInfoList(Integer userId);
     long count();
 }

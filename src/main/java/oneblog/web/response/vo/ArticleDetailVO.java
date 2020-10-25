@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 import oneblog.model.Category;
+import oneblog.model.User;
 
 import java.util.Date;
 
@@ -21,7 +22,7 @@ public class ArticleDetailVO {
 
     private Integer id;
 
-    private Integer author;
+    private User author;
 
     private String originalAuthor;
 

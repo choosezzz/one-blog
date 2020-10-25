@@ -22,7 +22,7 @@
                         <li class="am-active">编辑博客</li>
                     </ol>
                     <!--发布博客表单-->
-                    <div th:replace="include/alert::html"></div>
+                    <div th:replace="include/tips::html"></div>
                     <form class="am-form am-form-horizontal" >
                         <div class="am-form-group pub-blog-form">
                             <label for="doc-ipt-3" class="col-sm-2 am-form-label">博客标题</label>
@@ -41,29 +41,29 @@
                         <div class="am-form-group pub-blog-form">
                             <label class="col-sm-2 am-form-label">原链接</label>
                             <div class="col-sm-10">
-                                <input type="text" @keyup.enter="update" v-model.trim="article.originalUrl">
+                                <input type="text" @keyup.enter="update" v-model.trim="article.originalTarget">
                             </div>
                         </div>
 
                         <div class="am-form-group pub-blog-form">
                             <label class="col-sm-2 am-form-label">博客类型</label>
                             <select v-model.trim="article.type">
-                                <option value="原创">原创</option>
-                                <option value="转载">转载</option>
+                                <option value="1">原创</option>
+                                <option value="2">转载</option>
                             </select>
                         </div>
 
                         <div class="am-form-group am-form-select pub-blog-form">
                             <label class="col-sm-2 am-form-label">博客分类</label>
-                            <select v-model.trim="article.category.id">
-                                <option :value="c.id" v-for="c in categories">{{c.name}}</option>
+                            <select v-model.trim="article.category.cateId">
+                                <option :value="c.cateId" v-for="c in categories">{{c.cateName}}</option>
                             </select>
                         </div>
 
                         <div class="am-form-group pub-blog-form" style="margin-top: 25px;">
                             <label>博客标签</label>
                             <select multiple v-model.trim="article.tagsId">
-                                <option :value="t.id" v-for="t in tags">{{t.name}}</option>
+                                <option :value="t.tagId" v-for="t in tags">{{t.tagName}}</option>
                             </select>
                         </div>
 
@@ -99,11 +99,11 @@
     $(function(){
         const data4Vue = {
             editor: null,     //编辑器实例
-            uri: 'articles',
+            uri: '/article',
             message: '',
             show: false,
-            article: {id:0,author:{'id':0},originalAuthor:'',title:'',content:'',
-                tags:'',type:'',category:{'id':0}},
+            article: {id:0,author:{userId:0, userName:''},originalAuthor:'',title:'',content:'',
+                tags:'',type:0,category:{cateId:0,cateName:''}},
             tags: [],
             categories: []
         };
@@ -119,75 +119,83 @@
             },
             methods: {
                 loadTag: function() {
-                    const url = "/admin_tag/tags";
+                    const url = "/tag/list";
                     axios.get(url).then(function(response){
-                        vue.tags = response.data;
+                        vue.tags = response.data.data;
                     });
                 },
                 loadCategory: function() {
-                    const url = "/all_categories";
+                    const url = "/cate/list";
                     axios.get(url).then(function(response){
-                        vue.categories = response.data;
+                        vue.categories = response.data.data;
                     });
                 },
                 closeAlert: function() {
                     vue.show = false;
                 },
+                showMsg: function (message){
+                    vue.show = true;
+                    vue.message = message;
+                    setTimeout(function () {
+                        vue.show = false;
+                    }, 2500)
+                },
                 get:function(){
                     const id = getUrlParms("id");
                     const url = this.uri+"/"+id;
                     axios.get(url).then(function(response) {
-                        vue.article = response.data;
-                        // vue.$options.methods.initCKEditor(response.data.content);
-                        CKEDITOR.replace('editor', {height: '300px', width: '100%', toolbar: 'toolbar_Full'});
-                        vue.editor = CKEDITOR.instances.editor;
-                        vue.editor.setData(response.data.content);
+                        if (response.data.code === 2001){
+                            vue.article = response.data.data;
+                            vue.article.tagsId=response.data.data.tags.split(",");
+                            // vue.$options.methods.initCKEditor(response.data.content);
+                            CKEDITOR.replace('editor', {height: '300px', width: '100%', toolbar: 'toolbar_Full'});
+                            vue.editor = CKEDITOR.instances.editor;
+                            vue.editor.setData(response.data.data.content);
+                        }else {
+                            vue.showMsg(response.data.msg);
+                            return;
+                        }
                     })
                 },
                 update:function () {
                     if (isEmpty(this.article.title)) {
-                        vue.message = "\"博客标题\"不能为空!";
-                        vue.show = true;
+                        this.showMsg("\"博客标题\"不能为空!");
                         return;
                     }
-                    if (isEmpty(this.article.type)) {
-                        vue.message = "\"博客类型\"不能为空!";
-                        vue.show = true;
+                    if (!isBiggerThan0(this.article.type)) {
+                        this.showMsg("\"博客类型\"不能为空!");
                         return;
                     }
-                    if (!isBiggerThan0(this.article.category.id)) {
-                        vue.message = "\"博客分类\"不能为空!";
-                        vue.show = true;
+                    if (!isBiggerThan0(this.article.category.cateId)) {
+                        this.showMsg("\"博客分类\"不能为空!");
                         return;
                     }
                     if (isEmpty(this.article.tagsId)) {
                         vue.message = "\"博客标签\"不能为空!";
-                        vue.show = true;
+                        this.showMsg();
                         return;
                     }
                     if (this.article.tagsId.length>5) {
-                        vue.message = "\"博客标签\"不能超过5个!";
-                        vue.show = true;
+                        this.showMsg("\"博客标签\"不能超过5个!");
                         return;
                     }
-                    if (isEmpty(this.article.originalAuthor) && this.article.type=='转载') {
-                        vue.message = "\"转载\"博客需填写源作者!";
-                        vue.show = true;
+                    if (isEmpty(this.article.originalAuthor) && this.article.type==='2') {
+                        this.showMsg("\"转载\"博客需填写源作者!");
                         return;
                     }
 
-                    const url = this.uri;
+                    const url = this.uri+"/edit";
                     this.article.content = this.editor.getData();
+                    this.article.tags=this.article.tagsId.join(",");
+                    this.article.category=this.article.category.cateId;
                     axios.put(url,vue.article).then(function(response){
-                        if (response.data.id > 0) {
+                        if (response.data.code === 2001) {
                             location.href = "/m/article";
                         } else {
-                            vue.message = "编辑失败!";
-                            vue.show = true;
+                            vue.showMsg(response.data.message);
                         }
                     }).catch(function (error) {
-                        vue.message = error;
-                        vue.show = true;
+                        vue.showMsg(error);
                     });
                 },
                 initCKEditor(content) {

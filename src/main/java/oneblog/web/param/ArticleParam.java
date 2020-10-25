@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 @ToString(callSuper = true)
 public class ArticleParam extends ReqParam {
 
-    private Integer articleId;
+    private Integer id;
 
     private String originalAuthor;
 
