@@ -14,6 +14,7 @@ public enum ResponseEnum {
     TAG_EXIST(4006, "标签已存在。"),
     TAG_FAILED(4007, "标签操作失败。"),
     TAG_NOT_MATCH(4008, "标签ID与名称不匹配。"),
+    TAG_NOT_EMPTY(4013, "当前标签存在关联的文章，不可删除。"),
     CATE_EXIST(4009, "类别已存在。"),
     CATE_FAILED(4010, "类别操作失败。"),
     CATE_NOT_MATCH(4011, "类别ID与名称不匹配。"),

@@ -3,6 +3,7 @@ package oneblog.service.impl;
 import oneblog.dao.CategoryMapper;
 import oneblog.model.Category;
 import oneblog.service.CateService;
+import oneblog.web.response.vo.CateArticleCountVO;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,5 +71,15 @@ public class CateManageServiceImpl implements CateService {
     @Override
     public int count() {
         return categoryMapper.count();
+    }
+
+    @Override
+    public CateArticleCountVO getArticleCount(Integer cateId) {
+        return categoryMapper.getArticleCountById(cateId);
+    }
+
+    @Override
+    public List<CateArticleCountVO> getArticleCountList() {
+        return categoryMapper.getArticleCountList();
     }
 }

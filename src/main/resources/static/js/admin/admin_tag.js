@@ -18,13 +18,13 @@ $(function(){
         },
         methods: {
             count:function(){
-                const url = this.uri + "/count";
+                const url = "/count/tags";
                 axios.get(url).then(function(response) {
                     vue.countAll = response.data.data;
                 });
             },
             list:function(start){
-                const url =  this.uri+"/list";
+                const url =  "/count/tag_article";
                 axios.get(url).then(function(response) {
                     // vue.pagination = response.data;
                     vue.beans = response.data.data;
@@ -52,7 +52,15 @@ $(function(){
                     }, 3000)
                 });
             },
-            deleteBean: function (id,name) {
+            deleteBean: function (id,name,articleCount) {
+
+                if (articleCount > 0){
+                    vue.message = "标签存在关联文章，不可删除！";
+                    vue.show = true;
+                    setTimeout(function () {
+                        vue.show = false;
+                    }, 3000)
+                }
                 const url = this.uri+"/delete";
                 this.tag.tagName = name;
                 this.tag.tagId = id;

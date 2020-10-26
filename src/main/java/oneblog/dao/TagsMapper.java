@@ -1,6 +1,7 @@
 package oneblog.dao;
 
 import oneblog.model.Tags;
+import oneblog.web.response.vo.TagArticleCountVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -26,4 +27,7 @@ public interface TagsMapper {
     int updateByPrimaryKey(Tags record);
 
     Integer count();
+
+    TagArticleCountVO getArticleCount(Integer tagsId);
+    List<TagArticleCountVO> getArticleCountList();
 }

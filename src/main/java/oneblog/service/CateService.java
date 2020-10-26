@@ -1,6 +1,7 @@
 package oneblog.service;
 
 import oneblog.model.Category;
+import oneblog.web.response.vo.CateArticleCountVO;
 
 import java.util.List;
 
@@ -15,4 +16,6 @@ public interface CateService {
     List<Category> list();
     Boolean cateExist(String cateName);
     int count();
+    CateArticleCountVO getArticleCount(Integer cateId);
+    List<CateArticleCountVO> getArticleCountList();
 }

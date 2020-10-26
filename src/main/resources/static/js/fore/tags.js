@@ -16,7 +16,7 @@ $(function(){
         },
         methods: {
             count:function(){
-                const url = this.uri + "/count";
+                const url = "/count/tags";
                 axios.get(url).then(function(response) {
                     vue.countAll = response.data.data;
                 });

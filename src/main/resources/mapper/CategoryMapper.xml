@@ -80,4 +80,33 @@
     </set>
     where cate_id = #{cateId,jdbcType=INTEGER}
   </update>
+
+  <resultMap id="cateArticleCount" type="oneblog.web.response.vo.CateArticleCountVO">
+    <id column="cate_id" property="cateId" jdbcType="INTEGER" />
+    <result column="cate_name" property="cateName" jdbcType="VARCHAR" />
+    <result column="article_count" property="articleCount" jdbcType="INTEGER" />
+  </resultMap>
+
+  <sql id="articleCountSql">
+    SELECT
+        cate_id,
+        cate_name,
+        count( a.id ) AS article_count
+    FROM
+        category c
+        LEFT JOIN article a ON c.cate_id = a.category
+  </sql>
+
+  <select id="getArticleCountById" parameterType="java.lang.Integer" resultMap="cateArticleCount">
+    <include refid="articleCountSql"></include>
+    where cate_id=#{cateId}
+    GROUP BY
+    cate_id
+  </select>
+  <select id="getArticleCountList" resultMap="cateArticleCount">
+    <include refid="articleCountSql"></include>
+    GROUP BY
+    cate_id
+    order by cate_id
+  </select>
 </mapper>

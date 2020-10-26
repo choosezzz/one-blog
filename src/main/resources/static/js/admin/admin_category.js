@@ -19,17 +19,17 @@ $(function(){
         },
         methods: {
             count:function(){
-                var url = this.uri + "/count";
+                var url = "/count/cate";
                 axios.get(url).then(function(response) {
                     vue.countAll = response.data.data;
                 });
-                url = "/article/count";
+                url = "/count/article";
                 axios.get(url).then(function(response) {
                     vue.countArticle = response.data.data;
                 });
             },
             list:function(start){
-                const url = this.uri + "/list";
+                const url = "/count/cate_article";
                 axios.get(url).then(function(response) {
                     vue.pagination = response.data;
                     vue.beans = response.data.data;

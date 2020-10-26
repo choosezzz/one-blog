@@ -28,11 +28,11 @@
                                     <div class="updateCategory">
                                         <a class="addCategory" id="add-tag"><i class="am-icon-plus-square"></i> 添加标签</a>
                                     </div>
-                                    <div th:replace="include/alert::html"></div>
+                                    <div th:replace="include/tips::html"></div>
 
                                     <div class="categories">
                                         <span v-for="tag in beans">
-                                            <a :href="'/article_of_tag?tid='+tag.id"><span class="category">{{tag.tagName}}</span></a><a class="am-icon-remove category-remove" @click="deleteBean(tag.tagId,tag.tagName)"></a>
+                                            <a :href="'/article_of_tag?tid='+tag.tagId"><span class="category">{{tag.tagName}} - {{tag.articleCount}}</span></a><a class="am-icon-remove category-remove" @click="deleteBean(tag.tagId,tag.tagName,tag.articleCount)"></a>
                                         </span>
                                     </div>
                                     <div th:replace="include/page::html" ></div>

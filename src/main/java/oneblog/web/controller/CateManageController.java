@@ -29,15 +29,10 @@ public class CateManageController {
     @Autowired
     private CateService cateService;
 
-    @GetMapping("/count")
-    public ResponseVO count(){
-        return ResponseUtil.success(cateService.count());
-    }
     @GetMapping("/list")
     public ResponseVO list(){
         return ResponseUtil.success(cateService.list());
     }
-
     @PostMapping("/add")
     public ResponseVO addCate(@RequestBody @Valid AddCateParam param){
         log.info("add cate, param:{}", param);

@@ -4,6 +4,7 @@ import oneblog.constant.ApiConstant;
 import oneblog.dao.TagsMapper;
 import oneblog.model.Tags;
 import oneblog.service.TagsService;
+import oneblog.web.response.vo.TagArticleCountVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -109,5 +110,15 @@ public class TagsServiceImpl implements TagsService {
     @Override
     public Integer getNormalTagsCount() {
         return tagsMapper.count();
+    }
+
+    @Override
+    public List<TagArticleCountVO> getArticleCountList() {
+        return tagsMapper.getArticleCountList();
+    }
+
+    @Override
+    public TagArticleCountVO getArticleCount(Integer tagId) {
+        return tagsMapper.getArticleCount(tagId);
     }
 }

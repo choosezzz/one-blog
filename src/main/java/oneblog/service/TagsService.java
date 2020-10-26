@@ -1,6 +1,7 @@
 package oneblog.service;
 
 import oneblog.model.Tags;
+import oneblog.web.response.vo.TagArticleCountVO;
 
 import java.util.List;
 
@@ -40,4 +41,7 @@ public interface TagsService {
     Integer getNormalTagsCount();
 
     List<Tags> batchGetTags(List<Integer> tagIds);
+
+    List<TagArticleCountVO> getArticleCountList();
+    TagArticleCountVO getArticleCount(Integer tagId);
 }

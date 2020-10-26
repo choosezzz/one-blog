@@ -9,6 +9,7 @@ import oneblog.utils.ResponseUtil;
 import oneblog.web.param.AddTagParam;
 import oneblog.web.param.DeleteTagParam;
 import oneblog.web.response.ResponseVO;
+import oneblog.web.response.vo.TagArticleCountVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,20 +58,17 @@ public class TagController {
         }
         return ResponseUtil.forNull(ResponseEnum.TAG_FAILED);
     }
-
-    @GetMapping(value = "/count", name = "统计标签数量")
-    public ResponseVO<Integer> tagsCount() {
-        Integer count = tagsService.getNormalTagsCount();
-        return ResponseUtil.success(count);
-    }
-
     //@PostMapping(value = "/delete", name = "逻辑删除")
     public ResponseVO deleteTags(@RequestBody @Valid DeleteTagParam param) {
         logger.info("[delete tag]: param = {}", param);
 
         Integer tagId = redisService.getTagsId(param.getTagName());
-        if (tagId != null && !tagId.equals(param.getTagId())) {
+        if (tagId == null || !tagId.equals(param.getTagId())) {
             return ResponseUtil.forNull(ResponseEnum.TAG_NOT_MATCH);
+        }
+        TagArticleCountVO articleCount = tagsService.getArticleCount(tagId);
+        if (articleCount != null && articleCount.getArticleCount() > 0){
+            return ResponseUtil.forNull(ResponseEnum.TAG_NOT_EMPTY);
         }
         Tags tags = new Tags();
         tags.setTagId(param.getTagId());
@@ -87,8 +85,12 @@ public class TagController {
     public ResponseVO realDeleteTags(@RequestBody @Valid DeleteTagParam param) {
         logger.info("[real delete tag]: param = {}", param);
         Integer tagId = redisService.getTagsId(param.getTagName());
-        if (tagId != null && !tagId.equals(param.getTagId())) {
+        if (tagId == null || !tagId.equals(param.getTagId())) {
             return ResponseUtil.forNull(ResponseEnum.TAG_NOT_MATCH);
+        }
+        TagArticleCountVO articleCount = tagsService.getArticleCount(tagId);
+        if (articleCount != null && articleCount.getArticleCount() > 0){
+            return ResponseUtil.forNull(ResponseEnum.TAG_NOT_EMPTY);
         }
         Tags tags = new Tags();
         tags.setTagId(tagId);

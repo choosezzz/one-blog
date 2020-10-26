@@ -2,6 +2,7 @@ package oneblog.service.impl;
 
 import oneblog.model.Category;
 import oneblog.service.CateService;
+import oneblog.web.response.vo.CateArticleCountVO;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -54,5 +55,15 @@ public class CateQueryServiceImpl implements CateService {
     @Override
     public int count() {
         return 0;
+    }
+
+    @Override
+    public CateArticleCountVO getArticleCount(Integer cateId) {
+        return cateService.getArticleCount(cateId);
+    }
+
+    @Override
+    public List<CateArticleCountVO> getArticleCountList() {
+        return cateService.getArticleCountList();
     }
 }

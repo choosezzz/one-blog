@@ -107,4 +107,47 @@
       status = #{status,jdbcType=TINYINT}
     where tag_id = #{tagId,jdbcType=INTEGER}
   </update>
+
+  <resultMap id="articleCount" type="oneblog.web.response.vo.TagArticleCountVO">
+    <id column="tag_id" property="tagId" jdbcType="INTEGER" />
+    <result column="tag_name" property="tagName" jdbcType="VARCHAR" />
+    <result column="article_count" property="articleCount" jdbcType="INTEGER"/>
+  </resultMap>
+  <sql id="articleCountSql">
+    SELECT
+    t.tag_id,
+    t.tag_name,
+    article_count
+    FROM
+    tags t
+    LEFT JOIN (
+    SELECT
+    substring_index( substring_index( a.tags, ',', b.role_id), ',', - 1 ) AS tag_id,
+    count( a.id ) AS article_count
+    FROM
+    article a
+    JOIN role b ON b.role_id <![CDATA[ <= ]]> ( LENGTH( a.tags ) - LENGTH( REPLACE ( a.tags, ',', '' ) ) + 1 )
+    GROUP BY
+    tag_id
+    ) tmp ON tmp.tag_id = t.tag_id
+  </sql>
+
+  <select id="getArticleCount" resultMap="articleCount">
+    SELECT
+        t.tag_id,
+        t.tag_name,
+        count( a.id ) AS article_count
+    FROM
+        article a
+        LEFT JOIN tags t ON t.tag_id LIKE ( '%' + a.tags + '%' )
+    WHERE
+        tag_id = #{tagsId}
+    GROUP BY
+        t.tag_id
+  </select>
+
+  <select id="getArticleCountList" resultMap="articleCount">
+    <include refid="articleCountSql"></include>
+    order by t.tag_id
+  </select>
 </mapper>

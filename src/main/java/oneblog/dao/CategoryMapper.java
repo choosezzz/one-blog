@@ -1,6 +1,7 @@
 package oneblog.dao;
 
 import oneblog.model.Category;
+import oneblog.web.response.vo.CateArticleCountVO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,4 +18,7 @@ public interface CategoryMapper {
     List<Category> selectAll();
 
     int count();
+
+    CateArticleCountVO getArticleCountById(Integer cateId);
+    List<CateArticleCountVO> getArticleCountList();
 }
